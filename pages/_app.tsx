@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       mounted = false;
       subscription?.unsubscribe();
     };
-  }, []);
+  }, [session]);
 
   if (isLoading) return <p>Loading...</p>;
 
