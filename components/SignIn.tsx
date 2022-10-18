@@ -20,8 +20,13 @@ const SignIn = () => {
   };
 
   return (
-    <>
+    <div className="min-h-[calc(100vh-70px)] px-2 flex flex-col justify-center items-center max-w-sm container mx-auto text-center gap-10">
       <h1 className="text-2xl">Sign in via magic link with your email below</h1>
+      <p className="">
+        Once you fill in your e-mail address, you will receive a link. Click on
+        the link to log in. If it is the first time you log in you will be
+        promped to fill in some basic information.
+      </p>
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-200">
         <form onSubmit={handleSubmit} className="card-body">
           <div className="form-control">
@@ -43,7 +48,7 @@ const SignIn = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
