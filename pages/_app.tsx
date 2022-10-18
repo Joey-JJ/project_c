@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
+import SignIn from "../components/SignIn";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,8 +44,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <sessionContext.Provider value={session}>
-      <Component {...pageProps} />
+    <sessionContext.Provider value={{ session, setSession } as any}>
+      {session ? <Component {...pageProps} /> : <SignIn />}
     </sessionContext.Provider>
   );
 }
