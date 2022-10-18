@@ -46,8 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <sessionContext.Provider value={{ session, setSession } as any}>
-      <Navbar />
-      {session ? <Component {...pageProps} /> : <SignIn />}
+      <Navbar>{session ? <Component {...pageProps} /> : <SignIn />}</Navbar>
     </sessionContext.Provider>
   );
 }

@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 
-const Navbar: React.FC = () => {
+const Navbar = ({ children }: any) => {
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -22,8 +22,9 @@ const Navbar: React.FC = () => {
             width={75}
             alt="Logo loods"
           />
-          <div />
+          <div className="w-12" />
         </nav>
+        {children}
       </div>
 
       {/* Drawer content */}
