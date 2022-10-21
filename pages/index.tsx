@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import type { NextPage } from "next";
 import Image from "next/image";
+import TicketCount from "../components/TicketCount";
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
@@ -14,9 +15,9 @@ const Home: NextPage = () => {
         src={require("./../public/logo_loods.png")}
         alt="Logo loods"
         width={300}
-        height={200}
-      />
+        height={200} />
       <p>Logged in as: {session.user.email}</p>
+      <TicketCount></TicketCount>
       <button
         onClick={() => supabase.auth.signOut()}
         className="btn btn-primary"
@@ -26,5 +27,5 @@ const Home: NextPage = () => {
     </div>
   );
 };
-
+/*{session.user.email}, bij logged in as: als je magic link weer aanzet*/
 export default Home;
