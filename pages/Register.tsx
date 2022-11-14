@@ -8,23 +8,23 @@ export default function Register() {
                     <div className="card-body">
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">Kenteken</span>
+                                <span className="label-text">License number</span>
                             </label>
                             <input type="text" placeholder="XX-XXX-XX" className="input input-bordered w-full max-w-xs" />
                         </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">Laadpas nummer</span>
+                                <span className="label-text">Card number</span>
                             </label>
                             <input type="text" placeholder="XX-XXX-XX-XXXXXX" className="input input-bordered w-full max-w-xs" />
                         </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">Naam</span>
+                                <span className="label-text">Name</span>
                             </label>
-                            <input type="text" placeholder="Naam" className="input input-bordered w-full max-w-xs" />
+                            <input type="text" placeholder="Name" className="input input-bordered w-full max-w-xs" />
                         </div>
-                        <button className="btn btn-primary">Registreren</button>
+                        <button className="btn btn-primary">Register</button>
                     </div>
                 </div>
             </div>
