@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import type { NextPage } from "next";
 import Image from "next/image";
+import Register from "../components/Register";
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
         height={200}
       />
       <p>Logged in as: {session.user.email}</p>
+      <Register/>
       <button
         onClick={() => supabase.auth.signOut()}
         className="btn btn-primary"

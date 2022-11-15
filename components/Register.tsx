@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from "react";
+import { supabase } from "../utils/supabaseClient";
 
-export default function Register() {
+const Register = () => {
+    const [cardnumber, setPassword] = useState("");
+    const [License, setLicense] = useState("");
+    const [name, setName] = useState("");
+    
+    
     return (
         <>
-            <div class="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center">
                 <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <div className="card-body">
                         <div className="form-control w-full max-w-xs">
@@ -11,6 +17,7 @@ export default function Register() {
                                 <span className="label-text">License number</span>
                             </label>
                             <input type="text" placeholder="XX-XXX-XX" className="input input-bordered w-full max-w-xs" />
+
                         </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
@@ -31,3 +38,5 @@ export default function Register() {
         </>
     )
 }
+
+export default Register
