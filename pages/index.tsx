@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         width={300}
         height={200} />
       <p>Logged in as: {session.user.email}</p>
-      <Register/>
+      <Register/> 
       <TicketCount></TicketCount>
       <button
         onClick={() => supabase.auth.signOut()}
