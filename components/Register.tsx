@@ -1,11 +1,17 @@
+
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
+import { sessionContext } from "../context/sessionContext";
+import { useContext } from "react";
+
+
 
 const Register = () => {
     const [cardnumber, setCardnumber] = useState("");
     const [License, setLicense] = useState("");
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
+
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -23,6 +29,10 @@ const Register = () => {
             setLicense("");
             setName("");
         }
+
+    };
+
+       
 
         return (
             <>
@@ -61,9 +71,9 @@ const Register = () => {
                     </div>
                 </div>
             </>
-        )
+        );
 
-    }
-}
+    
+};
 
-export default Register
+export default Register;
