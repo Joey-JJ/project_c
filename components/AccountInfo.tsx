@@ -15,11 +15,6 @@ const AccountInfo = () => {
             </div>
             <div className="card-body">
                 <h2 className="card-title">test</h2>
-                <p className="mb-3">
-                    <span className="badge me-2">test</span>
-                    <span className="badge me-2">test</span>
-                    <span className="badge me-2">test</span>
-                </p>
             </div>
         </div>
     );
