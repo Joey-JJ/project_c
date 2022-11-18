@@ -3,6 +3,8 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import TicketCount from "../components/TicketCount";
 import ChargeStations from "../components/ChargeStations";
+import Register from "../components/Register";
+import TicketCount from "../components/TicketCount"
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
@@ -18,6 +20,7 @@ const Home: NextPage = () => {
         width={300}
         height={200} />
       <p>Logged in as: {session.user.email}</p>
+      <Register/>
       <TicketCount></TicketCount>
       <ChargeStations></ChargeStations>
       <button
