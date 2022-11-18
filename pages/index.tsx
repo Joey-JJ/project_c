@@ -6,7 +6,6 @@ import TicketCount from "../components/TicketCount"
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
-import AccountInfo from "./AccountInfo";
 
 const Home: NextPage = () => {
   const { session }: any = useContext(sessionContext);
@@ -19,7 +18,8 @@ const Home: NextPage = () => {
         width={300}
         height={200} />
       <p>Logged in as: {session.user.email}</p>
-      <AccountInfo/>
+      <Register/> 
+      <TicketCount></TicketCount>
       <button
         onClick={() => supabase.auth.signOut()}
         className="btn btn-primary"

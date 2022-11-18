@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import AccountInfo from "../../pages/AccountInfo";
+import AccountInfo from "../AccountInfo";
 
 const Navbar = ({ children }: any) => {
   return (
@@ -40,7 +40,7 @@ const Navbar = ({ children }: any) => {
             <a>Account information</a>
           </li>
           <li>
-            <a>Sign out</a>
+            <a>kanker</a>
           </li>
         </ul>
       </div>
