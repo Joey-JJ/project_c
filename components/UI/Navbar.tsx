@@ -40,7 +40,7 @@ const Navbar = ({ children }: any) => {
             <a>Account information</a>
           </li>
           <li>
-            <a>kanker</a>
+            <a>Sign out</a>
           </li>
         </ul>
       </div>
