@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import AccountInfo from "../AccountInfo";
+import AccountInfo from "../../pages/AccountInfo";
 
 const Navbar = ({ children }: any) => {
   return (
