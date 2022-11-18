@@ -6,7 +6,7 @@ const TicketCount = () => {
             <div className="">
             <div className="stat">
                 <div className="stat-title">Available Tickets</div>
-                <div className="stat-value">68</div>
+                <div className="stat-value">69</div>
                 <div className="stat-desc">Good job!</div>
             </div>
             </div>
