@@ -1,7 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+<<<<<<< HEAD
 import AccountInfo from "../../pages/AccountInfo";
+=======
+import Notification from "./Notification";
+>>>>>>> main
 
 const Navbar = ({ children }: any) => {
   return (
@@ -23,7 +27,9 @@ const Navbar = ({ children }: any) => {
             width={75}
             alt="Logo loods"
           />
-          <div className="w-12" />
+          <div className="w-12">
+            <Notification />
+          </div>
         </nav>
         {children}
       </div>
