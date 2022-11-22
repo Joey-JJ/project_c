@@ -22,28 +22,16 @@ interface ChargeStationProps {
   status: string;
 }
 
-const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
+const ChargeStation: FC = () => {
   return (
-    <div className="sm:w-1/3 w-1/2 sm:px-6 px-2 sm:py-4 py-2">
-      <div className="px-4 py-6 border-2 border-white max-w-[200px] mx-auto flex items-center justify-evenly">
-        <div className="sm:text-lg text-sm font-bold text-white">{name}</div>
-        <div
-          className={`w-[24px] border-[1px] border-white h-[24px] rounded-full ${STATUS_COLOR[status]}`}
-          
-        ></div>
-        <label htmlFor="my-modal" className="btn">info</label>
-            <div className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">station info</h3>
-                    <p className="py-4">info</p>
-                    <div className="modal-action">
-                        <label htmlFor="my-modal" className="btn">close</label>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+    <div tabIndex={0} className="collapse border border-base-300 bg-base-100 rounded-box"> 
+    <div className="collapse-title text-xl font-medium">
+      user:*
     </div>
+    <div className="collapse-content"> 
+      <p>tabIndex={0}user info</p>
+    </div>
+  </div>
   );
 };
 
@@ -67,22 +55,17 @@ const LuutChargeStations: FC = () => {
     setChargeStationData(updatedFakeData);
   };
 
-  if (!chargeStationData?.length) {
-    return null;
-  }
+  
 
   return (
     <div className=" max-w-screen-lg">
-      <div className="flex flex-wrap -sm:mx-3 mx-1 my-2">
-        {chargeStationData.map((chargeStation, idx) => (
+      
+        {chargeStationData.map( () => (
           <ChargeStation
-            key={idx}
-            name={chargeStation.name}
-            status={chargeStation.status}
           />
         ))}
       </div>
-    </div>
+    
   );
 };
 
