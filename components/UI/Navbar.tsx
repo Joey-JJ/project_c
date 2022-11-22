@@ -1,11 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-<<<<<<< HEAD
-import AccountInfo from "../../pages/AccountInfo";
-=======
 import Notification from "./Notification";
->>>>>>> main
 
 const Navbar = ({ children }: any) => {
   return (
