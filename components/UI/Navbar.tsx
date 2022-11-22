@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Notification from "./Notification";
@@ -17,12 +18,15 @@ const Navbar = ({ children }: any) => {
           >
             <AiOutlineMenu />
           </label>
-          <Image
-            src={require("./../../public/logo_loods.png")}
-            height={50}
-            width={75}
-            alt="Logo loods"
-          />
+          <Link href="/">
+            <Image
+              src={require("./../../public/logo_loods.png")}
+              height={50}
+              width={75}
+              alt="Logo loods"
+              className="cursor-pointer"
+            />
+          </Link>
           <div className="w-12">
             <Notification />
           </div>
@@ -39,7 +43,9 @@ const Navbar = ({ children }: any) => {
           </li>
           <li>
             {/* redirect to account info page */}
-            <a>Account information</a>
+            <Link href="/AccountInfo" replace>
+              <a>Account information</a>
+            </Link>
           </li>
           <li>
             <a>Sign out</a>
