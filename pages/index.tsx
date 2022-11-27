@@ -5,7 +5,7 @@ import TicketCount from "../components/TicketCount";
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
-import LuutChargeStations from "../components/LuutChargeStations";
+import AdminInfo from "../components/AdminInfo";
 
 const Home: NextPage = () => {
   const { session }: any = useContext(sessionContext);
@@ -20,8 +20,13 @@ const Home: NextPage = () => {
           height={200}
         />
         <p>Logged in as: {session.user.email}</p>
+        <input type="text" placeholder="search" className="input w-full max-w-xs" />
         <TicketCount></TicketCount>
-        <LuutChargeStations />
+        
+        <AdminInfo />
+        <AdminInfo />
+        <AdminInfo />
+        <AdminInfo />
         <button
           onClick={() => supabase.auth.signOut()}
           className="btn btn-primary"
