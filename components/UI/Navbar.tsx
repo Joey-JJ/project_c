@@ -6,7 +6,11 @@ import { supabase } from "../../utils/supabaseClient";
 import { sessionContext } from "../../context/sessionContext";
 import { useContext } from "react";
 
-const Navbar: React.FC = ({ children }: any) => {
+interface NavProps {
+  children: React.ReactNode; // 👈️ type children
+}
+
+const Navbar: React.FC<NavProps> = ({ children }: any) => {
   const { session }: any = useContext(sessionContext);
 
   return (
@@ -36,7 +40,7 @@ const Navbar: React.FC = ({ children }: any) => {
           </Link>
           <div className="w-12" />
         </nav>
-        {children}
+        {children as any}
       </div>
 
       {/* Drawer content */}
