@@ -2,6 +2,7 @@ import { useContext } from "react";
 import type { NextPage } from "next";
 import Image from "next/image";
 import TicketCount from "../components/TicketCount";
+import TicketCountAdmin from "../components/TicketCountAdmin";
 
 import { supabase } from "../utils/supabaseClient";
 import { sessionContext } from "../context/sessionContext";
@@ -21,6 +22,7 @@ const Home: NextPage = () => {
         />
         <p>Logged in as: {session.user.email}</p>
         <TicketCount></TicketCount>
+        <TicketCountAdmin></TicketCountAdmin> 
         <LuutChargeStations />
         <button
           onClick={() => supabase.auth.signOut()}
