@@ -24,9 +24,7 @@ const Home: NextPage = () => {
         <TicketCount></TicketCount>
         
         <AdminInfo />
-        <AdminInfo />
-        <AdminInfo />
-        <AdminInfo />
+       
         <button
           onClick={() => supabase.auth.signOut()}
           className="btn btn-primary"
