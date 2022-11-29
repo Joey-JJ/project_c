@@ -1,9 +1,18 @@
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { AiOutlineMenu } from "react-icons/ai";
-import Notification from "./Notification";
+import { supabase } from "../../utils/supabaseClient";
+import { sessionContext } from "../../context/sessionContext";
+import { useContext } from "react";
 
-const Navbar = ({ children }: any) => {
+interface NavProps {
+  children: React.ReactNode; // 👈️ type children
+}
+
+const Navbar: React.FC<NavProps> = ({ children }: any) => {
+  const { session }: any = useContext(sessionContext);
+
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -11,23 +20,27 @@ const Navbar = ({ children }: any) => {
       {/* Navbar content */}
       <div className="drawer-content">
         <nav className="navbar bg-base-100 border-2 flex justify-between items-center">
-          <label
-            htmlFor="my-drawer"
-            className="btn btn-ghost drawer-button text-2xl"
-          >
-            <AiOutlineMenu />
-          </label>
-          <Image
-            src={require("./../../public/logo_loods.png")}
-            height={50}
-            width={75}
-            alt="Logo loods"
-          />
-          <div className="w-12">
-            <Notification />
-          </div>
+          {session && (
+            <label
+              htmlFor="my-drawer"
+              className="btn btn-ghost drawer-button text-2xl"
+            >
+              <AiOutlineMenu />
+            </label>
+          )}
+          {!session && <div className="w-14" />}
+          <Link href="/">
+            <Image
+              src={require("./../../public/logo_loods.png")}
+              height={50}
+              width={75}
+              alt="Logo loods"
+              className="cursor-pointer"
+            />
+          </Link>
+          <div className="w-12" />
         </nav>
-        {children}
+        {children as any}
       </div>
 
       {/* Drawer content */}
@@ -39,10 +52,12 @@ const Navbar = ({ children }: any) => {
           </li>
           <li>
             {/* redirect to account info page */}
-            <a>Account information</a>
+            <Link href="/AccountInfo" replace>
+              <a>Account information</a>
+            </Link>
           </li>
           <li>
-            <a>Sign out</a>
+            <a onClick={async () => await supabase.auth.signOut()}>Sign out</a>
           </li>
         </ul>
       </div>

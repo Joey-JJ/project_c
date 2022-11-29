@@ -7,9 +7,10 @@ import { sessionContext } from "../context/sessionContext";
 import SignIn from "../components/SignIn";
 import Navbar from "../components/UI/Navbar";
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState({ user: { email: "test" } });
 
   useEffect(() => {
     let mounted = true;

@@ -25,10 +25,10 @@ interface ChargeStationProps {
 const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   return (
     <div className="sm:w-1/3 w-1/2 sm:px-6 px-2 sm:py-4 py-2">
-      <div className="px-4 py-6 border-2 border-white max-w-[200px] mx-auto flex items-center justify-evenly">
-        <div className="sm:text-lg text-sm font-bold text-white">{name}</div>
+      <div className="px-4 py-6 border-2 border-slate-400 max-w-[200px] mx-auto flex items-center justify-evenly">
+        <div className="sm:text-lg text-sm font-bold">{name}</div>
         <div
-          className={`w-[24px] border-[1px] border-white h-[24px] rounded-full ${STATUS_COLOR[status]}`}
+          className={`w-[24px] border-[1px] border-slate-400 h-[24px] rounded-full ${STATUS_COLOR[status]}`}
         ></div>
       </div>
     </div>
