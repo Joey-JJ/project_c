@@ -51,5 +51,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </sessionContext.Provider>
   );
 }
-
+/*na de dubbele punt <SignIn />*/
 export default MyApp;
