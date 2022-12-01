@@ -16,15 +16,13 @@ const Home: NextPage = () => {
       <div className="container mx-auto min-h-[calc(100vh-70px)] flex flex-col items-center gap-10  ">
         <p>Logged in as: {session.user.email}</p>
 
-        <TicketCount></TicketCount>
-        <TicketCountAdmin></TicketCountAdmin> 
 
         <label htmlFor="my-modal-4" className="btn btn-primary">
           Instructions
         </label>
         <LuutChargeStations />
 
-        <div className="flex">
+        <div className="flex flex-col space-y-2 mb-4">
           <Notification />
           <TicketCount />
         </div>
