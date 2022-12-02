@@ -10,7 +10,7 @@ import Navbar from "../components/UI/Navbar";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [session, setSession] = useState({ user: { email: "test" } });
+  const [session, setSession] = useState( );
 
   useEffect(() => {
     let mounted = true;
