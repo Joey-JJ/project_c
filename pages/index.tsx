@@ -1,15 +1,20 @@
 import { useContext } from "react";
 import type { NextPage } from "next";
+
 import Image from "next/image";
 import TicketCount from "../components/TicketCount";
 import TicketCountAdmin from "../components/TicketCountAdmin";
 import { supabase } from "../utils/supabaseClient";
 import Notification from "../components/Notification";
 import { sessionContext } from "../context/sessionContext";
-import LuutChargeStations from "../components/LuutChargeStations";
+import VisitorDashboard from "../components/VisitorDashboard";
+import AdminDashboard from "../components/AdminDashboard";
+
 
 const Home: NextPage = () => {
   const { session }: any = useContext(sessionContext);
+  const isAdmin = session.user.email.ToLower() === "caverobeheerder@gmail.com" ? true : false;
+
 
   return (
     <div className="">
@@ -24,24 +29,8 @@ const Home: NextPage = () => {
         </label>
         <LuutChargeStations />
 
-        <div className="flex">
-          <Notification />
-          <TicketCount />
-        </div>
-      </div>
-      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-      <label htmlFor="my-modal-4" className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
-          <h3 className="text-lg font-bold">How it works</h3>
-          <p className="py-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-            consectetur quae dolores provident modi nobis ex quia illum
-            dignissimos, dicta accusantium deleniti minus soluta voluptas
-            maiores nesciunt aspernatur architecto obcaecati!
-          </p>
-        </label>
-      </label>
-    </div>
+  return (
+  (isAdmin ? <AdminDashboard /> : <VisitorDashboard />)
   );
 };
 

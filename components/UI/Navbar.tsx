@@ -12,6 +12,7 @@ interface NavProps {
 
 const Navbar: React.FC<NavProps> = ({ children }: any) => {
   const { session }: any = useContext(sessionContext);
+  const isAdmin = session.user.email.ToLower() === "caverobeheerder@gmail.com" ? true : false;
 
   return (
     <div className="drawer">
@@ -48,14 +49,18 @@ const Navbar: React.FC<NavProps> = ({ children }: any) => {
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
           <li>
-            <a>Help</a>
-          </li>
-          <li>
             {/* redirect to account info page */}
             <Link href="/AccountInfo" replace>
               <a>Account information</a>
             </Link>
           </li>
+          {isAdmin && (
+            <li>
+              <Link href= "/AdminInfo">
+                <a>Admin information</a>	
+              </Link>
+            </li>
+          )}
           <li>
             <a onClick={async () => await supabase.auth.signOut()}>Sign out</a>
           </li>

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import Chart from "../components/Chart";
+import Chart from "./Chart";
 
 //make 6 different charging stations with a status
 
