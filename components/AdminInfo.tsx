@@ -1,42 +1,46 @@
 import React, { FC, useEffect, useState } from "react";
 
+import UserInfoAdmin from "../components/UserInfoAdmin";
+import { AiFillSketchCircle } from "react-icons/ai";
 
 
 
-
-
-
-
+let userID: number = 1;
+let user1: number = 1;
+let user2: number = 2;
+function change() {
+  return(
+    userID=user2
+  )
+}
 const adminInfo: FC = () => {
   return (
     
-    <div tabIndex={0} className="collapse border border-base-300 bg-base-100 rounded-box"> 
-    <div className="collapse-title text-xl font-medium">
-      User ID:***
-    </div>
-    <div className="collapse-content"> 
-      <p>name:***</p>
-      <p>kenteken:***</p>
-      <p>card:***</p>
-      <p>
-        <label htmlFor="my-modal" className="btn">edit info</label>
-      <input type="checkbox" id="my-modal" className="modal-toggle" />
-        <div className="modal">
-            <div className="modal-box">
-                <h3 className="font-bold text-lg">Edit user info</h3>
-                    <p className="py-4">name: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-                    <p className="py-4">kenteken: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-                    <p className="py-4">card: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-                        <div className="modal-action">
-                            <label htmlFor="my-modal" className="btn">save</label>
-                        </div>
-            </div>
-        </div></p>
-    </div>
+      
+    <div className="drawer drawer-mobile">
+  <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+  <div className="drawer-content flex flex-col items-center justify-center">
+   
+    <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+  
+  </div> 
+  <div className="drawer-side">
+    <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
+    <ul className="menu p-4 w-80 bg-base-100 text-base-content">
+      <li><a><input type="text" placeholder="search" className="input w-full max-w-xs   "></input></a></li>
+      <li><a><button className="btn btn-wide">user {user1}</button></a></li>
+      <li><a><button onClick={change}  className="btn btn-wide">user {user2}</button></a></li>
+    </ul>
+  
   </div>
+</div>
+    
+    
+    
+  
   );
 };
 
 
-
+export const ID = userID;
 export default adminInfo ;
