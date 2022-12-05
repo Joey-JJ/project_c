@@ -13,6 +13,7 @@ const SignIn = () => {
       if (error) throw error;
       alert("Check your email for the login link!");
     } catch (error: any) {
+      console.log(error);
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
