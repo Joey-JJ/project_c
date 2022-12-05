@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import Chart from "./Chart";
+import Chart from "../components/Chart";
+import TicketCountAdmin from "../components/TicketCountAdmin";
 
 //make 6 different charging stations with a status
 
@@ -109,20 +110,20 @@ const badgeColor = (status: string) => {
 
 const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   return (
-    <div className="card w-96 bg-base-100 card-bordered shadow-xl overflow-visible">
-      <div className="card-body">
+    <div className="card w-70 lg:w-100 bg-base-100 card-bordered shadow-xl overflow-visible">
+      <div className="card-body items-center lg:items-baseline">
         <h2 className="card-title">{name}</h2>
         <p>{badgeColor(status)}</p>
-        <div className="card-actions justify-end">
+        <div className="card-actions">
           <div className="dropdown dropdown-hover overflow-visible">
-            <label tabIndex={0} className="btn btn-sm">
+            <label tabIndex={0} className="btn btn-wide lg:w-80">
               More
             </label>
             <div
               tabIndex={0}
-              className="dropdown-content card card-bordered shadow-xl w-auto h-auto p-2  bg-base-100  text-black"
+              className="dropdown-content card card-bordered shadow-xl bg-base-100  text-black"
             >
-              <div className="card-body">
+              <div className="card-body p-0.5 md:p-2.5 lg:p-8">
                 <h3 className="card-title">Info</h3>
                 <h4>Usage: </h4>
                 <p>{isUsed(status)}</p>
@@ -170,8 +171,8 @@ const AdminDashboard: React.FC<Props> = ({ session }) => {
 
   return (
     <div>
-      <div className="container mx-auto min-h-screen flex flex-col items-center overflow-visible">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="container mx-auto min-h-screen flex flex-col items-center overflow-visible mt-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {chargeStationData.map((chargeStation, idx) => (
             <ChargeStation
               key={idx}
@@ -179,6 +180,7 @@ const AdminDashboard: React.FC<Props> = ({ session }) => {
               status={chargeStation.status}
             />
           ))}
+          <TicketCountAdmin></TicketCountAdmin>
         </div>
       </div>
     </div>
