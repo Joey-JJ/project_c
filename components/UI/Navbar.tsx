@@ -20,7 +20,7 @@ const Navbar: React.FC<NavProps> = ({ children, session }: any) => {
 
       {/* Navbar content */}
       <div className="drawer-content">
-        <nav className="navbar bg-base-100 border-2 flex justify-between items-center pl-0 pr-2.5">
+        <nav className="navbar bg-base-100 border-2 flex justify-between items-center">
           {session && (
             <label
               htmlFor="my-drawer"
@@ -49,7 +49,7 @@ const Navbar: React.FC<NavProps> = ({ children, session }: any) => {
       {/* Drawer content */}
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
-        <ul className="menu p-4 overflow-y-auto w-40 min-[420px]:w-60 md:w-80 bg-base-100 text-base-content">
+        <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
           <li>
             <Link href="/">Home</Link>
           </li>
