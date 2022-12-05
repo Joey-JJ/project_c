@@ -1,28 +1,36 @@
 import React from "react";
 
-const AdminAccountToevoegen = () => {
+const AddNewUser = () => {
   const handleSubmit = () => {};
 
   return (
     <div className="max-w-[400px] m-auto">
       <form onSubmit={handleSubmit} className="card-body">
         <div className="text-center">
-          Add
-          <br />
           Account
+          <br />
+          toevoegen
         </div>
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add name"
+            placeholder="Vul volledige naam in"
             className="input input-bordered"
             name="name"
           />
         </div>
         <div className="form-control">
           <input
+            type="text"
+            placeholder="Voer telefoon nummer in"
+            className="input input-bordered"
+            name="phone_number"
+          />
+        </div>
+        <div className="form-control">
+          <input
             type="email"
-            placeholder="Add email"
+            placeholder="Voer email-adres in"
             className="input input-bordered"
             name="email"
           />
@@ -30,7 +38,7 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add cardnumber"
+            placeholder="Voer kaartnummer in"
             className="input input-bordered"
             name="card_number"
           />
@@ -38,14 +46,14 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add license plate"
+            placeholder="Voer kenteken in"
             className="input input-bordered"
             name="license_number"
           />
         </div>
         <div className="form-control mt-2">
           <button type="submit" className="btn btn-primary">
-            Add Account
+            Voeg account toe
           </button>
         </div>
       </form>
@@ -53,4 +61,4 @@ const AdminAccountToevoegen = () => {
   );
 };
 
-export default AdminAccountToevoegen;
+export default AddNewUser;

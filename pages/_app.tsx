@@ -1,39 +1,55 @@
 import React, { useState, useEffect } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+
 import { supabase } from "../utils/supabaseClient";
+import { sessionContext } from "../context/sessionContext";
 import SignIn from "../components/SignIn";
 import Navbar from "../components/UI/Navbar";
 
+
 function MyApp({ Component, pageProps }: AppProps) {
-  const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState({ user: { email: "test" } });
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session as any);
-    });
+    let mounted = true;
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session as any);
-    });
+    const fetchSession = async () => {
+      const {
+        data: { session: any },
+      } = await supabase.auth.getSession();
 
-    setLoading(false);
+      if (mounted) {
+        if (session) {
+          setSession(session);
+        }
+
+        setIsLoading(false);
+      }
+    };
+
+    fetchSession();
+
+    const { subscription }: any = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session as any);
+      }
+    );
 
     return () => {
-      subscription.unsubscribe();
+      mounted = false;
+      subscription?.unsubscribe();
     };
   }, [session]);
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
 
   return (
-    <Navbar session={session}>
-      {session ? <Component {...pageProps} session={session} /> : <SignIn />}
-    </Navbar>
+    <sessionContext.Provider value={{ session, setSession } as any}>
+      <Navbar>{session ? <Component {...pageProps} /> : <SignIn />}</Navbar>
+    </sessionContext.Provider>
   );
 }
-
+/*na de dubbele punt <SignIn />*/
 export default MyApp;

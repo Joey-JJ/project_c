@@ -1,62 +1,45 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import type { NextPage } from "next";
+import Image from "next/image";
+import TicketCount from "../components/TicketCount";
+import TicketCountAdmin from "../components/TicketCountAdmin";
 import { supabase } from "../utils/supabaseClient";
-import VisitorDashboard from "../components/VisitorDashboard";
-import AdminDashboard from "../components/AdminDashboard";
-import Register from "../components/Register";
+import Notification from "../components/Notification";
+import { sessionContext } from "../context/sessionContext";
+import LuutChargeStations from "../components/LuutChargeStations";
 
-interface Props {
-  session: any;
-}
+const Home: NextPage = () => {
+  const { session }: any = useContext(sessionContext);
 
-const Home: NextPage<Props> = ({ session }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showRegister, setShowRegister] = useState<boolean>(false);
+  return (
+    <div className="">
+      <div className="container mx-auto min-h-[calc(100vh-70px)] flex flex-col items-center gap-10  ">
+        <p>Logged in as: {session.user.email}</p>
 
-  const isAdmin: boolean =
-    session.user.email.toLowerCase() === "caverobeheerder@gmail.com"
-      ? true
-      : false;
 
-  useEffect(() => {
-    const checkForProfileData = async () => {
-      setLoading(true);
-      try {
-        // const { data, error } = await supabase
-        //   .from("profiles")
-        //   .select("*")
-        //   .eq("id", ((session as any).user as any).id)
-        //   .single();
-        // const { data, error } = await supabase
-        //   .from("profiles")
-        //   .select("*")
-        //   .eq("id", session.user.id)
-        //   .single();
-        // if (!data) {
-        //   console.log("no data");
-        //   return;
-        // }
-        // if (error) throw error;
-      } catch (error: any) {
-        alert(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+        <label htmlFor="my-modal-4" className="btn btn-primary">
+          Instructions
+        </label>
+        <LuutChargeStations />
 
-    if (session) {
-      checkForProfileData();
-    }
-  }, [session]);
-  console.log("session", session);
-
-  // if (loading) return <p>Loading...</p>;
-  // if (showRegister) return <Register session={session} />;
-
-  return isAdmin ? (
-    <AdminDashboard session={session} />
-  ) : (
-    <VisitorDashboard session={session} />
+        <div className="flex flex-col space-y-2 mb-4">
+          <Notification />
+          <TicketCount />
+        </div>
+      </div>
+      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+      <label htmlFor="my-modal-4" className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+          <h3 className="text-lg font-bold">How it works</h3>
+          <p className="py-4">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
+            consectetur quae dolores provident modi nobis ex quia illum
+            dignissimos, dicta accusantium deleniti minus soluta voluptas
+            maiores nesciunt aspernatur architecto obcaecati!
+          </p>
+        </label>
+      </label>
+    </div>
   );
 };
 
