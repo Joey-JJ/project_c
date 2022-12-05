@@ -26,12 +26,11 @@ interface ChargeStationProps {
   status: string;
 }
 
-
 const USER = {
-  NAME : "John Doe",
-  L_NUMBER : "G-001-BB",
-  EMAIL : "JohnDoe@test.nl",
-}
+  NAME: "John Doe",
+  L_NUMBER: "G-001-BB",
+  EMAIL: "JohnDoe@test.nl",
+};
 
 const RemoveUnderScore = (name: string) => {
   return name.replace(/_/g, " ");
@@ -62,9 +61,9 @@ const isUsed = (status: string) => {
           <p>License plate number: None</p>
           <p>Email: None</p>
         </div>
-    );
+      );
     default:
-      return(
+      return (
         <div>
           <p>Current user: None</p>
           <p>License plate number: None</p>
@@ -72,8 +71,7 @@ const isUsed = (status: string) => {
         </div>
       );
   }
-}
-
+};
 
 const badgeColor = (status: string) => {
   switch (status) {
@@ -110,10 +108,6 @@ const badgeColor = (status: string) => {
   }
 };
 
-
-
-
-
 const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   return (
     <div className="card w-70 lg:w-100 bg-base-100 card-bordered shadow-xl overflow-visible">
@@ -132,10 +126,8 @@ const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
               <div className="card-body p-0.5 md:p-2.5 lg:p-8">
                 <h3 className="card-title">Info</h3>
                 <h4>Usage: </h4>
-                <p>
-                  {isUsed(status)}
-                </p>
-              <h4>Stats: </h4>
+                <p>{isUsed(status)}</p>
+                <h4>Stats: </h4>
                 <p>
                   <Chart />
                 </p>
@@ -148,7 +140,11 @@ const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   );
 };
 
-const AdminDashboard: FC = () => {
+interface Props {
+  session: any;
+}
+
+const AdminDashboard: React.FC<Props> = ({ session }) => {
   //making a admin dashboard
   const [chargeStationData, setChargeStationData] = useState<ChargeType[]>([]);
 
@@ -187,7 +183,6 @@ const AdminDashboard: FC = () => {
           <TicketCountAdmin></TicketCountAdmin>
         </div>
       </div>
-      
     </div>
   );
 };
