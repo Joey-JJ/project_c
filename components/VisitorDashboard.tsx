@@ -20,7 +20,7 @@ const VisitorDashboard: NextPage<Props> = ({ session }) => {
 
         <LuutChargeStations />
 
-        <div className="flex">
+        <div className="flex flex-col space-y-2 mb-4">
           <Notification />
           <TicketCount />
         </div>
