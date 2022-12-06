@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         />
         
         
-        <input type="text" placeholder="search" className="input w-full max-w-xs   "></input>
+       
         
           <div className=" flex flex-row container mx-auto min-h-screen gap-10 bg-[rgb(65,107,128)]">
           <div><AdminInfo /></div>

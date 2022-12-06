@@ -6,7 +6,6 @@ import {ID} from "../components/AdminInfo";
 
 
 console.log(ID);
-let color: string = "blue";
 let idTest: number=ID;
 const UserInfo_Admin: FC = () => {
   return (
@@ -14,10 +13,10 @@ const UserInfo_Admin: FC = () => {
     <div className="card w-96 bg-base-100 shadow-xl">
   <div className="card-body">
     <h2 className="card-title">User 1</h2>
-    <p>Name:{ID}</p> 
-    <p>Email:***</p>
-    <p>Cardnumber:***</p>
-    <p>license plate:***</p>
+    <p>Name:user {ID}</p> 
+    <p>Email:fakemail@mail.com</p>
+    <p>Cardnumber:356</p>
+    <p>license plate:GB-001-B</p>
   </div>
  
 
