@@ -5,8 +5,8 @@ import {ID} from "../components/AdminInfo";
 
 
 
-console.log(ID);
-let idTest: number=ID;
+
+
 const UserInfo_Admin: FC = () => {
   return (
     
