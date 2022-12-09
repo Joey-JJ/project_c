@@ -18,8 +18,36 @@ const Navbar: React.FC<NavProps> = ({ children, session }: any) => {
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
 
-      {/* Navbar content */}
+      {/* Navbar content (admin gedeelte) */}
       <div className="drawer-content">
+        {isAdmin ? (
+        <nav className="navbar bg-base-100 border-2">
+          {session && (
+            <label
+              htmlFor="my-drawer"
+              className="btn btn-ghost drawer-button text-2xl"
+            >
+              <AiOutlineMenu />
+            </label>
+          )}
+          {!session && <div className="w-14" />}
+          <div className="navbar-center lg:mr-24 lg:pr-24"><Link href="/">
+            <>
+              <Image
+                src={require("./../../public/logo_loods.png")}
+                height={50}
+                width={75}
+                alt="Logo loods"
+                className="cursor-pointer"
+              />
+            </>
+          </Link>
+          </div>
+            <div className="card-title navbar-end"></div>
+            <div className="card-title navbar-end bg-">Admin Dashboard</div>
+          <div className="w-12" />
+        </nav>) : 
+        /* Navbar content (visitor gedeelte) */
         <nav className="navbar bg-base-100 border-2 flex justify-between items-center pl-0 pr-2.5">
           {session && (
             <label
@@ -42,7 +70,7 @@ const Navbar: React.FC<NavProps> = ({ children, session }: any) => {
             </>
           </Link>
           <div className="w-12" />
-        </nav>
+        </nav>}
         {children as any}
       </div>
 

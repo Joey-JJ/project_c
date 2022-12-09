@@ -30,9 +30,9 @@ const TicketCountAdmin = () => {
                     <input type="text" placeholder="Input amount of tickets to raffle off..." value={raffledtickets} onChange={(e) => setRaffledtickets(e.target.value)} className="input input-bordered w-full max-w-xs text-center lg:text-left mb-2" />
                     <div>
                         
-                        <input type="submit" value="Raffle Tickets" className="btn btn-wide lg:w-40 items-center"  
+                        <input type="submit" value="Raffle Tickets" className="btn btn-wide w-25 min-[360px]:w-40 items-center"  
                         />
-                        <label htmlFor="my-modal-4" className="btn btn-wide lg:w-40">
+                        <label htmlFor="my-modal-4" className="btn btn-wide w-25 min-[360px]:w-40 items-center">
                             See results
                         </label>
                         <input type="checkbox" id="my-modal-4" className="modal-toggle" />
