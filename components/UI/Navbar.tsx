@@ -3,12 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineMenu } from "react-icons/ai";
 import { supabase } from "../../utils/supabaseClient";
+import { sessionContext } from "../../context/sessionContext";
+import { useContext } from "react";
+
 interface NavProps {
-  session: any;
   children: React.ReactNode; // 👈️ type children
 }
 
-const Navbar: React.FC<NavProps> = ({ children, session }: any) => {
+const Navbar: React.FC<NavProps> = ({ children }: any) => {
+  const { session }: any = useContext(sessionContext);
   const isAdmin =
     session?.user.email.toLowerCase() === "caverobeheerder@gmail.com"
       ? true

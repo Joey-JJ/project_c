@@ -5,12 +5,10 @@ import Image from "next/image";
 import TicketCount from "../components/TicketCount";
 import UserInfoAdmin from "../components/UserInfoAdmin";
 import { supabase } from "../utils/supabaseClient";
-import { sessionContext } from "../context/sessionContext";
 import AdminInfo from "../components/AdminInfo";
-
+import { sessionContext } from "../context/sessionContext"
 
 const Home: NextPage = () => {
-  const { session }: any = useContext(sessionContext);
 
   return (
     <div className="bg-[rgb(65,107,128)] py-32">
