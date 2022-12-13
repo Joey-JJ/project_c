@@ -4,13 +4,11 @@ import Image from "next/image";
 import TicketCount from "./TicketCount";
 import Notification from "./Notification";
 import LuutChargeStations from "./LuutChargeStations";
-import { sessionContext } from "../context/sessionContext";
-
-
+import { useSessionContext } from "../context/sessionContext";
 
 const VisitorDashboard: NextPage = () => {
-  const { session }: any = useContext(sessionContext);
-  
+  const { session } = useSessionContext();
+
   return (
     <div className="">
       <div className="container mx-auto min-h-[calc(100vh-70px)] flex flex-col items-center gap-10  ">
