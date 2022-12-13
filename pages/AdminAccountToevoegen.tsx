@@ -1,12 +1,26 @@
+import React, { useState } from "react";
+
 const AdminAccountToevoegen = () => {
-  const handleSubmit = () => {};
+  const [inputs, setInputs] = useState({});
+  const handleChange = (event: any) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values: any) => ({...values, [name]: value}))
+  }
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    console.log(inputs);
+    alert(inputs);
+  }
 
   return (
-    <div className="max-w-[400px] m-auto">
+    <div >
+      
+      <div className="max-w-[400px] m-auto">
       <form onSubmit={handleSubmit} className="card-body">
-        <div className="text-center">
+        <div className="card-title text-center justify-center card w-70 lg:w-100 bg-base-300 card-bordered shadow-xl overflow-visible">
           Add
-          <br />
+
           Account
         </div>
         <div className="form-control">
@@ -14,7 +28,9 @@ const AdminAccountToevoegen = () => {
             type="text"
             placeholder="Add name"
             className="input input-bordered"
-            name="name"
+            name="username"
+            value={inputs.username || ""} 
+            onChange={handleChange}
           />
         </div>
         <div className="form-control">
@@ -23,6 +39,8 @@ const AdminAccountToevoegen = () => {
             placeholder="Add email"
             className="input input-bordered"
             name="email"
+            value={inputs.email || ""} 
+            onChange={handleChange}
           />
         </div>
         <div className="form-control">
@@ -31,6 +49,8 @@ const AdminAccountToevoegen = () => {
             placeholder="Add cardnumber"
             className="input input-bordered"
             name="card_number"
+            value={inputs.card_number || ""} 
+            onChange={handleChange}
           />
         </div>
         <div className="form-control">
@@ -39,14 +59,17 @@ const AdminAccountToevoegen = () => {
             placeholder="Add license plate"
             className="input input-bordered"
             name="license_number"
+            value={inputs.license_number || ""} 
+            onChange={handleChange}
           />
         </div>
-        <div className="form-control mt-2">
-          <button type="submit" className="btn btn-primary">
+        <div className="form-control mt-2 items-center">
+          <button type="submit" className="btn btn-wide">
             Add Account
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
