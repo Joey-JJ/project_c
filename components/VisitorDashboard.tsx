@@ -6,7 +6,11 @@ import Notification from "./Notification";
 import { sessionContext } from "../context/sessionContext";
 import LuutChargeStations from "./LuutChargeStations";
 
-const VisitorDashboard = () => {
+interface Props {
+    profile: any;
+}
+
+const VisitorDashboard : React.FC<Props> = ({profile}) => {
     
     const { session }: any = useContext(sessionContext);
 
@@ -22,7 +26,7 @@ const VisitorDashboard = () => {
   
           <div className="flex">
             <Notification />
-            <TicketCount />
+            <TicketCount  />
           </div>
         </div>
         <input type="checkbox" id="my-modal-4" className="modal-toggle" />

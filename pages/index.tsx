@@ -9,13 +9,14 @@ import { useState } from "react";
 import { sessionContext } from "../context/sessionContext";
 import VisitorDashboard from "../components/VisitorDashboard";
 import AdminDashboard from "../components/AdminDashboard";
+import { Profile } from "../Types/Profiles";
 
 
 const Home: NextPage = () => {
   const { session }: any = useContext(sessionContext);
   const isAdmin = session.user.email.toLowerCase() === "caverobeheerder@gmail.com" ? true : false;
   const [fetchError, setFetchError] = useState("");
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState({} as Profile|null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -29,16 +30,11 @@ const Home: NextPage = () => {
       if (error) { 
         setFetchError("Could not fetch profile");
         console.log(error);
-        setProfile(null);
         }	;
       if (data) {
         setProfile(data);
         setFetchError("");
       }
-      if (!data) {
-        setProfile(null);
-        setFetchError("");
-        }
     }
     fetchProfile();
   }, []);
@@ -51,7 +47,7 @@ const Home: NextPage = () => {
     <div>
       {fetchError && <p>{fetchError}</p>}
       {profile && isAdmin && <AdminDashboard />}
-      {profile && !isAdmin && <VisitorDashboard />}
+      {profile && !isAdmin && <VisitorDashboard profile={profile} />}
       {!profile && <Register />}
     </div>
 
