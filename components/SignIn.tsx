@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 

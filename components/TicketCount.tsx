@@ -1,6 +1,6 @@
 import React from "react";
 
-const TicketCount = () => {
+const TicketCount: React.FC = () => {
   return (
     <div className="stats shadow">
       <div className="">

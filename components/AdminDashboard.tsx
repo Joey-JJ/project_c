@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import Chart from "../components/Chart";
-import TicketCountAdmin from "../components/TicketCountAdmin";
+import Chart from "./Chart";
+import TicketCountAdmin from "./TicketCountAdmin";
 
 //make 6 different charging stations with a status
 
@@ -140,11 +140,9 @@ const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   );
 };
 
-interface Props {
-  session: any;
-}
 
-const AdminDashboard: React.FC<Props> = ({ session }) => {
+
+const AdminDashboard: React.FC = () => {
   //making a admin dashboard
   const [chargeStationData, setChargeStationData] = useState<ChargeType[]>([]);
 

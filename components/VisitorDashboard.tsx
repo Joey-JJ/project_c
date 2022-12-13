@@ -1,15 +1,12 @@
-import { useContext } from "react";
 import type { NextPage } from "next";
-import Image from "next/image";
 import TicketCount from "./TicketCount";
 import Notification from "./Notification";
 import LuutChargeStations from "./LuutChargeStations";
+import { useSessionContext } from "../context/sessionContext";
 
-interface Props {
-  session: any;
-}
+const VisitorDashboard: NextPage = () => {
+  const { session } = useSessionContext();
 
-const VisitorDashboard: NextPage<Props> = ({ session }) => {
   return (
     <div className="">
       <div className="container mx-auto min-h-[calc(100vh-70px)] flex flex-col items-center gap-10  ">

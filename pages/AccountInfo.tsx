@@ -1,12 +1,9 @@
 import TicketCount from "../components/TicketCount";
-import React from "react";
-import { NextPage } from "next";
+import { useSessionContext } from "../context/sessionContext";
 
-interface Props {
-  session: any;
-}
+const AccountInfo = () => {
+  const { session } = useSessionContext();
 
-const AccountInfo: NextPage<Props> = ({ session }) => {
   return (
     <div>
       <div className="container mx-auto min-h-screen flex flex-col mt-8 items-center">

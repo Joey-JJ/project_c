@@ -1,62 +1,60 @@
-import { useState, useEffect, useContext } from "react";
 import type { NextPage } from "next";
 import { supabase } from "../utils/supabaseClient";
+import Register from "./Register";
+import { useEffect } from "react";
+import { useState } from "react";
+
+import { useSessionContext } from "../context/sessionContext";
 import VisitorDashboard from "../components/VisitorDashboard";
 import AdminDashboard from "../components/AdminDashboard";
-import Register from "../components/Register";
+import SignIn from "../components/SignIn";
 
-interface Props {
-  session: any;
-}
-
-const Home: NextPage<Props> = ({ session }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showRegister, setShowRegister] = useState<boolean>(false);
-
-  const isAdmin: boolean =
-    session.user.email.toLowerCase() === "caverobeheerder@gmail.com"
+const Home: NextPage = () => {
+  const { session } = useSessionContext();
+  const isAdmin =
+    session?.user.email?.toLowerCase() === "caverobeheerder@gmail.com"
       ? true
       : false;
+  const [fetchError, setFetchError] = useState("");
+  const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
-    const checkForProfileData = async () => {
-      setLoading(true);
-      try {
-        // const { data, error } = await supabase
-        //   .from("profiles")
-        //   .select("*")
-        //   .eq("id", ((session as any).user as any).id)
-        //   .single();
-        // const { data, error } = await supabase
-        //   .from("profiles")
-        //   .select("*")
-        //   .eq("id", session.user.id)
-        //   .single();
-        // if (!data) {
-        //   console.log("no data");
-        //   return;
-        // }
-        // if (error) throw error;
-      } catch (error: any) {
-        alert(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
 
-    if (session) {
-      checkForProfileData();
-    }
-  }, [session]);
-  console.log("session", session);
+  //     const { data, error } = await supabase
+  //       .from("profiles")
+  //       .select("*")
+  //       .eq("id", session?.user.id)
+  //       .maybeSingle();
 
-  // if (loading) return <p>Loading...</p>;
-  // if (showRegister) return <Register session={session} />;
+  //     if (error) {
+  //       setFetchError("Could not fetch profile");
+  //       console.log(error);
+  //       setProfile(null);
+  //       }	;
+  //     if (data) {
+  //       setProfile(data);
+  //       setFetchError("");
+  //     }
+  //     if (!data) {
+  //       setProfile(null);
+  //       setFetchError("");
+  //       }
+  //   }
+  //   fetchProfile();
+  // }, []);
 
-  return isAdmin ? (
-    <AdminDashboard session={session} />
-  ) : (
-    <VisitorDashboard session={session} />
+  if (!session) {
+    <SignIn />;
+  }
+
+  return (
+    <div>
+      {fetchError && <p>{fetchError}</p>}
+      {session && isAdmin && <AdminDashboard />}
+      {session && !isAdmin && <VisitorDashboard />}
+      {/* {!profile && <Register />} */}
+    </div>
   );
 };
 
