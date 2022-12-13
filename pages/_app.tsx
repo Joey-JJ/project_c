@@ -6,11 +6,11 @@ import Navbar from "../components/UI/Navbar";
 import SessionProvider from "../context/sessionContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { session } = useSessionContext();
-  console.log(session);
   return (
     <SessionProvider>
-      <Navbar>{session ? <Component {...pageProps} /> : <SignIn />}</Navbar>
+      <Navbar>
+        <Component {...pageProps} />
+      </Navbar>
     </SessionProvider>
   );
 }

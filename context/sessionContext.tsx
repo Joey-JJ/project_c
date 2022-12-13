@@ -1,5 +1,5 @@
 import { supabase } from "../utils/supabaseClient";
-import type { Session, Subscription } from "@supabase/supabase-js";
+import type { Session } from "@supabase/supabase-js";
 import React, { useState, useEffect, useContext, createContext } from "react";
 
 interface ContextType {
@@ -17,10 +17,11 @@ interface Props {
 }
 
 // Provider for the session context which fetches the current session
-const SessionProvider: React.FC<Props> = ({ children }: any) => {
+const SessionProvider: React.FC<Props> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
+    console.log("fetched");
     const fetchSession = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (!error) {
