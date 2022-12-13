@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineMenu } from "react-icons/ai";
 import { supabase } from "../../utils/supabaseClient";
-import { useContext } from "react";
 import { useSessionContext } from "../../context/sessionContext";
 
 interface NavProps {

@@ -1,11 +1,8 @@
 import TicketCount from "../components/TicketCount";
-import React from "react";
-import { sessionContext } from "../context/sessionContext";
-
-
+import { useSessionContext } from "../context/sessionContext";
 
 const AccountInfo = () => {
-  const { session }: any = React.useContext(sessionContext);
+  const { session } = useSessionContext();
 
   return (
     <div>

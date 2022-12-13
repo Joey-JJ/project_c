@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
-import { useContext } from "react";
 
 const Register = () => {
   const [cardnumber, setCardnumber] = useState("");
@@ -16,17 +15,15 @@ const Register = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from("profiles")
-        .insert([
-          {
-            uuid: session?.user.id,
-            username: name,
-            license: License,
-            card: cardnumber,
-            email: session?.user.email,
-          },
-        ]);
+      const { error } = await supabase.from("profiles").insert([
+        {
+          uuid: session?.user.id,
+          username: name,
+          license: License,
+          card: cardnumber,
+          email: session?.user.email,
+        },
+      ]);
       if (error) throw error;
     } catch (error: any) {
       alert(error.error_description || error.message);

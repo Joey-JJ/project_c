@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import type { NextPage } from "next";
 import { supabase } from "../utils/supabaseClient";
 import Register from "./Register";

@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import type { NextPage } from "next";
-import Image from "next/image";
 import TicketCount from "./TicketCount";
 import Notification from "./Notification";
 import LuutChargeStations from "./LuutChargeStations";
