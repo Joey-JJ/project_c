@@ -10,9 +10,8 @@ import Navbar from "../components/UI/Navbar";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [session, setSession] = useState( );
- 
-
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     let mounted = true;
@@ -53,5 +52,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </sessionContext.Provider>
   );
 }
-/*na de dubbele punt <SignIn />*/
+
 export default MyApp;
