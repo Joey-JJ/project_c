@@ -5,14 +5,18 @@ import TicketCount from "./TicketCount";
 import Notification from "./Notification";
 import { sessionContext } from "../context/sessionContext";
 import LuutChargeStations from "./LuutChargeStations";
+import LotterySystem from "./LotterySystem";
+import { Profile } from "../Types/Profiles";
 
 interface Props {
-    profile: any;
+    profile: Profile;
 }
 
 const VisitorDashboard : React.FC<Props> = ({profile}) => {
-    
+
     const { session }: any = useContext(sessionContext);
+    const Profile = profile;
+
 
     return ( 
         <div className="">
@@ -22,11 +26,12 @@ const VisitorDashboard : React.FC<Props> = ({profile}) => {
             Instructions
           </label>
   
+          <LotterySystem profile={Profile} />
           <LuutChargeStations />
-  
           <div className="flex">
             <Notification />
             <TicketCount  />
+
           </div>
         </div>
         <input type="checkbox" id="my-modal-4" className="modal-toggle" />
