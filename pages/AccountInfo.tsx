@@ -41,7 +41,7 @@ const AccountInfo = () => {
               <button className="btn btn-primary btn-sm btn-wide">Edit</button>
             </div>
           </div>
-          <TicketCount />
+          {/* <TicketCount /> */}
         </div>
       </div>
     </div>

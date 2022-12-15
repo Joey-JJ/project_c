@@ -22,6 +22,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!session?.user.id) return;
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
@@ -41,7 +42,7 @@ const Home: NextPage = () => {
   }, [session?.user.id]);
 
   if (!session) {
-    <SignIn />;
+    return <SignIn />;
   }
 
   return (
