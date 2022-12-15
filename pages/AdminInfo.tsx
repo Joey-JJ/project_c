@@ -1,42 +1,33 @@
-import React, { FC, useEffect, useState } from "react";
+import { useContext } from "react";
+import type { NextPage } from "next";
+import Image from "next/image";
+import TicketCount from "../components/TicketCount";
+import UserInfoAdmin from "../components/UserInfoAdmin";
+import { supabase } from "../utils/supabaseClient";
+import AdminInfo from "../components/AdminInfo";
 
-
-
-
-
-
-
-
-const adminInfo: FC = () => {
+const Home: NextPage = () => {
   return (
+    <div className="bg-[rgb(65,107,128)] py-32">
+      <div className="container mx-auto min-h-screen flex flex-col items-center gap-10 bg-[rgb(65,107,128)]">
+        <Image
+          src={require("./../public/logo_loods.png")}
+          alt="Logo loods"
+          width={300}
+          height={200}
+        />
 
-    <div tabIndex={0} className="collapse border border-base-300 bg-base-100 rounded-box">
-      <div className="collapse-title text-xl font-medium">
-        User ID:***
-      </div>
-      <div className="collapse-content">
-        <p>name:***</p>
-        <p>kenteken:***</p>
-        <p>card:***</p>
-        <p>
-          <label htmlFor="my-modal" className="btn">edit info</label>
-          <input type="checkbox" id="my-modal" className="modal-toggle" />
-          <div className="modal">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Edit user info</h3>
-              <p className="py-4">name: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-              <p className="py-4">kenteken: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-              <p className="py-4">card: <input type="text" placeholder="edit" className="input w-full max-w-xs" /></p>
-              <div className="modal-action">
-                <label htmlFor="my-modal" className="btn">save</label>
-              </div>
-            </div>
-          </div></p>
+        <div className=" flex flex-row container mx-auto min-h-screen gap-10 bg-[rgb(65,107,128)]">
+          <div>
+            <AdminInfo />
+          </div>
+          <div>
+            <UserInfoAdmin />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
-
-
-export default adminInfo;
+/*{session.user.email}, bij logged in as: als je magic link weer aanzet*/
+export default Home;

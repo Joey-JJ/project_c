@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-
-import { supabase } from "../utils/supabaseClient";
-import { sessionContext } from "../context/sessionContext";
+import { useSessionContext } from "../context/sessionContext";
 import SignIn from "../components/SignIn";
 import Navbar from "../components/UI/Navbar";
-
+import SessionProvider from "../context/sessionContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,12 +42,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [session]);
 
   if (isLoading) return <p>Loading...</p>;
-
   return (
-    <sessionContext.Provider value={{ session, setSession } as any}>
-      <Navbar>{session ? <Component {...pageProps} /> : <SignIn />}</Navbar>
-    </sessionContext.Provider>
+    <SessionProvider>
+      <Navbar>
+        <Component {...pageProps} />
+      </Navbar>
+    </SessionProvider>
   );
 }
-
 export default MyApp;

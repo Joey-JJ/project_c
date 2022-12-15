@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
+
+import { useState } from "react";
 import type { NextPage } from "next";
-import Image from "next/image";
 import TicketCount from "./TicketCount";
 import Notification from "./Notification";
-import { sessionContext } from "../context/sessionContext";
 import LuutChargeStations from "./LuutChargeStations";
 import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
+import { useSessionContext } from "../context/sessionContext";
 
 interface Props {
     profile: Profile;
@@ -14,7 +14,7 @@ interface Props {
 
 const VisitorDashboard : React.FC<Props> = ({profile}) => {
   const [ticketCount, setTicketCount] = useState(0);
-    const { session }: any = useContext(sessionContext);
+      const { session } = useSessionContext();
     const Profile = profile;
 
 
@@ -44,10 +44,6 @@ const VisitorDashboard : React.FC<Props> = ({profile}) => {
               dignissimos, dicta accusantium deleniti minus soluta voluptas
               maiores nesciunt aspernatur architecto obcaecati!
             </p>
-          </label>
-        </label>
-      </div>
-    );
-};
+          </label>)};
 
 export default VisitorDashboard;

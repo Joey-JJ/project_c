@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
-import { sessionContext } from "../context/sessionContext";
-
+import { useSessionContext } from "../context/sessionContext";
 
 const Register: React.FC = () => {
   const [cardnumber, setCardnumber] = useState("");
   const [License, setLicense] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const { session }: any = React.useContext(sessionContext);	
+  const { session } = useSessionContext();
+  
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();

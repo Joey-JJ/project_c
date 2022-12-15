@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -13,6 +13,7 @@ const SignIn = () => {
       if (error) throw error;
       alert("Check your email for the login link!");
     } catch (error: any) {
+      console.log(error);
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);

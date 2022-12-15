@@ -60,13 +60,10 @@ const TicketCount: React.FC<Props>= ({ticketCount, setTicketCount}) => {
     return <p>Loading...</p>
   }
 
-
-
-
   return (
     <div className="stats shadow">
       <div className="">
-        <div className="stat">
+        <div className="stat items-center text-center">
           <div className="stat-title">Available Tickets</div>
           <div className="stat-value">{ticketCount}</div>
           <div className="stat-desc">{status}</div>
