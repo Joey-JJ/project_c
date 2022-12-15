@@ -8,6 +8,7 @@ const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { session } = useSessionContext();
+  
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();

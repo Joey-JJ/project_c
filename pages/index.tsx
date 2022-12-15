@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useSessionContext } from "../context/sessionContext";
 import VisitorDashboard from "../components/VisitorDashboard";
 import AdminDashboard from "../components/AdminDashboard";
+
+import { Profile } from "../Types/Profiles";
 import SignIn from "../components/SignIn";
 
 const Home: NextPage = () => {
@@ -16,7 +18,7 @@ const Home: NextPage = () => {
       ? true
       : false;
   const [fetchError, setFetchError] = useState("");
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState({} as Profile | null);
 
   // useEffect(() => {
   //   const fetchProfile = async () => {
@@ -48,10 +50,11 @@ const Home: NextPage = () => {
     <SignIn />;
   }
 
+
   return (
     <div>
       {fetchError && <p>{fetchError}</p>}
-      {session && isAdmin && <AdminDashboard />}
+      {session && isAdmin && <AdminDashboard />} // session back to profile when fixing register form
       {session && !isAdmin && <VisitorDashboard />}
       {/* {!profile && <Register />} */}
     </div>
