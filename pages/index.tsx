@@ -18,44 +18,38 @@ const Home: NextPage = () => {
       ? true
       : false;
   const [fetchError, setFetchError] = useState("");
-  const [profile, setProfile] = useState({} as Profile | null);
+  const [profile, setProfile] = useState({} as Profile);
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session?.user.id)
+        .maybeSingle();
 
-  //     const { data, error } = await supabase
-  //       .from("profiles")
-  //       .select("*")
-  //       .eq("id", session?.user.id)
-  //       .maybeSingle();
-
-  //     if (error) {
-  //       setFetchError("Could not fetch profile");
-  //       console.log(error);
-  //       setProfile(null);
-  //       }	;
-  //     if (data) {
-  //       setProfile(data);
-  //       setFetchError("");
-  //     }
-  //     if (!data) {
-  //       setProfile(null);
-  //       setFetchError("");
-  //       }
-  //   }
-  //   fetchProfile();
-  // }, []);
+      if (error) {
+        setFetchError("Could not fetch profile");
+        console.log(error);
+      }
+      if (data) {
+        setProfile(data);
+        setFetchError("");
+      }
+    };
+    fetchProfile();
+  }, [session?.user.id]);
 
   if (!session) {
     <SignIn />;
   }
 
-
   return (
     <div>
       {fetchError && <p>{fetchError}</p>}
-      {session && isAdmin && <AdminDashboard />} // session back to profile when fixing register form
-      {session && !isAdmin && <VisitorDashboard />}
+      {session && isAdmin && <AdminDashboard />}
+      {/* // session back to profile when fixing register form */}
+      {session && !isAdmin && <VisitorDashboard profile={profile} />}
       {/* {!profile && <Register />} */}
     </div>
   );
