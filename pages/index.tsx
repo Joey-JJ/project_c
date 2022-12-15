@@ -18,7 +18,7 @@ const Home: NextPage = () => {
       ? true
       : false;
   const [fetchError, setFetchError] = useState("");
-  const [profile, setProfile] = useState({} as Profile);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -50,8 +50,8 @@ const Home: NextPage = () => {
       {fetchError && <p>{fetchError}</p>}
       {session && isAdmin && <AdminDashboard />}
       {/* // session back to profile when fixing register form */}
-      {session && !isAdmin && <VisitorDashboard profile={profile} />}
-      {/* {!profile && <Register />} */}
+      {profile && !isAdmin && <VisitorDashboard profile={profile} />}
+      {!profile && <Register />}
     </div>
   );
 };
