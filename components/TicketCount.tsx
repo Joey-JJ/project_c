@@ -4,10 +4,13 @@ import { sessionContext } from "../context/sessionContext";
 import { useContext } from "react";
 
 
+interface Props {
+  ticketCount: number;
+  setTicketCount: React.Dispatch<React.SetStateAction<number>>;
+}
 
-
-const TicketCount= () => {
-  const [ticketCount, setTicketCount] = useState(0);
+const TicketCount: React.FC<Props>= ({ticketCount, setTicketCount}) => {
+  
   const [loading, setLoading] = useState(true);
   const { session }: any = useContext(sessionContext);
   const [status, setStatus] = useState("");

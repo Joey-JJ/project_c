@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import type { NextPage } from "next";
 import Image from "next/image";
 import TicketCount from "./TicketCount";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const VisitorDashboard : React.FC<Props> = ({profile}) => {
-
+  const [ticketCount, setTicketCount] = useState(0);
     const { session }: any = useContext(sessionContext);
     const Profile = profile;
 
@@ -26,11 +26,11 @@ const VisitorDashboard : React.FC<Props> = ({profile}) => {
             Instructions
           </label>
   
-          <LotterySystem profile={Profile} />
+          <LotterySystem profile={Profile} setTicketCount={setTicketCount} />
           <LuutChargeStations />
           <div className="flex">
             <Notification />
-            <TicketCount  />
+            <TicketCount ticketCount={ticketCount} setTicketCount={setTicketCount} />
 
           </div>
         </div>

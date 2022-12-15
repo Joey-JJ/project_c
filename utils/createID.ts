@@ -9,6 +9,7 @@ export function createID(Tickets: Ticket[]) : number{
     }
     return id;
 }
+ 
 
 
   
