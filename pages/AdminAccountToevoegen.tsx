@@ -18,7 +18,7 @@ const AdminAccountToevoegen = () => {
       
       <div className="max-w-[400px] m-auto">
       <form onSubmit={handleSubmit} className="card-body">
-        <div className="card-title text-center justify-center card w-70 lg:w-100 bg-base-300 card-bordered shadow-xl overflow-visible">
+        <div className="card-title text-center justify-center card w-70 lg:w-100 bg-[#B09E7E] card-bordered shadow-xl overflow-visible">
           Add
 
           Account
