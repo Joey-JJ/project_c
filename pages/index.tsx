@@ -48,7 +48,7 @@ const Home: NextPage = () => {
   return (
     <div>
       {fetchError && <p>{fetchError}</p>}
-      {session && isAdmin && <AdminDashboard />}
+      {profile && isAdmin && <AdminDashboard />}
       {/* // session back to profile when fixing register form */}
       {profile && !isAdmin && <VisitorDashboard profile={profile} />}
       {!profile && <Register />}
