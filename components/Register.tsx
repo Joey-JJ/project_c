@@ -8,7 +8,7 @@ const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { session } = useSessionContext();
-  
+
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -17,10 +17,9 @@ const Register: React.FC = () => {
       const { error } = await supabase.from("profiles").insert([
         {
           uuid: session?.user.id,
-          username: name,
-          license: License,
-          card: cardnumber,
-          email: session?.user.email,
+          full_name: name,
+          license_number: License,
+          charge_card: cardnumber,
         },
       ]);
       if (error) throw error;
