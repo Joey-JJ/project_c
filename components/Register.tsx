@@ -4,7 +4,7 @@ import { useSessionContext } from "../context/sessionContext";
 
 const Register: React.FC = () => {
   const [cardnumber, setCardnumber] = useState("");
-  const [License, setLicense] = useState("");
+  const [license, setLicense] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { session } = useSessionContext();
@@ -18,12 +18,13 @@ const Register: React.FC = () => {
         {
           uuid: session?.user.id,
           full_name: name,
-          license_number: License,
+          license_number: license,
           charge_card: cardnumber,
         },
       ]);
       if (error) throw error;
     } catch (error: any) {
+      console.log(error);
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
@@ -43,7 +44,7 @@ const Register: React.FC = () => {
                 type="text"
                 placeholder="XX-XXX-XX"
                 className="input input-bordered w-full max-w-xs"
-                value={License}
+                value={license}
                 onChange={(e) => setLicense(e.target.value)}
               />
             </div>
