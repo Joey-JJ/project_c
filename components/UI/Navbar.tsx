@@ -104,6 +104,11 @@ const Navbar: React.FC<NavProps> = ({ children }: any) => {
                   <a>Add Account</a>
                 </Link>
               </li>
+              <li>
+                <Link href="/AdminRaffle">
+                  <a>Raffle</a>
+                </Link>
+              </li>
             </>
           )}
           <li>
