@@ -1,3 +1,4 @@
+import { validLicenseNumbers } from "../components/Regex";
 import React, { useState } from "react";
 
 const AdminAccountToevoegen = () => {
@@ -9,8 +10,35 @@ const AdminAccountToevoegen = () => {
   }
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(inputs);
-    alert(inputs);
+    if (validateInput()){
+      alert("The form was submitted because all the inputs were correct!")
+      console.log(inputs);
+    }
+    else{
+      alert("The form was not submitted because not all inputs were correct!")
+    }
+    //alert(inputs);
+  }
+
+  // input validation
+  const validateInput = () => {
+    const testLicenseNumber = (regexes: any, number:any ) => {
+      for (let i = 0; i < 18; i++){
+        if (regexes[i].test(number)) {
+          return true
+        }
+        else{
+          return false
+        }
+      }
+    }
+    inputs.license_number = inputs.license_number.replace(/-/g, '').toUpperCase();
+    if (testLicenseNumber(validLicenseNumbers, inputs.license_number)){
+      return true
+    }
+    else{
+      alert("Please enter a valid license number")
+    }
   }
 
   return (
