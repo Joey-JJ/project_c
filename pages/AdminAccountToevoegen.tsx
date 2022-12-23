@@ -1,4 +1,4 @@
-import { validLicenseNumbers } from "../components/Regex";
+import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 import React, { useState } from "react";
 
 const AdminAccountToevoegen = () => {
@@ -17,27 +17,37 @@ const AdminAccountToevoegen = () => {
     else{
       alert("The form was not submitted because not all inputs were correct!")
     }
-    //alert(inputs);
   }
 
-  // input validation
+  // input validation van ome yourick
   const validateInput = () => {
+    // input validation nummerplaat
     const testLicenseNumber = (regexes: any, number:any ) => {
       for (let i = 0; i < 18; i++){
         if (regexes[i].test(number)) {
           return true
         }
-        else{
+        else if (i == 18){
+          alert("Please enter a valid license number")
           return false
         }
       }
     }
-    inputs.license_number = inputs.license_number.replace(/-/g, '').toUpperCase();
-    if (testLicenseNumber(validLicenseNumbers, inputs.license_number)){
+    // input validation oplaadpas
+    const testCardNumber = (regex: any, number: any) => {
+      if (regex.test(number) && number.length < 15) {
+        return true
+      }
+      else{
+        alert("Please enter a valid card number")
+        return false
+      }
+    }
+    if (testLicenseNumber(validLicenseNumbers, inputs.license_number.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, inputs.card_number.replace(/-/g, '').toUpperCase())){
       return true
     }
     else{
-      alert("Please enter a valid license number")
+      return false
     }
   }
 
@@ -54,7 +64,7 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add name"
+            placeholder="Add full name"
             className="input input-bordered"
             name="username"
             value={inputs.username || ""} 
@@ -64,7 +74,7 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="email"
-            placeholder="Add email"
+            placeholder="Add email (example@email.com)"
             className="input input-bordered"
             name="email"
             value={inputs.email || ""} 
@@ -74,7 +84,7 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add cardnumber"
+            placeholder="Add cardnumber (NL-CAV-12..)"
             className="input input-bordered"
             name="card_number"
             value={inputs.card_number || ""} 
@@ -84,7 +94,7 @@ const AdminAccountToevoegen = () => {
         <div className="form-control">
           <input
             type="text"
-            placeholder="Add license plate"
+            placeholder="Add license plate (1-CAV-01)"
             className="input input-bordered"
             name="license_number"
             value={inputs.license_number || ""} 

@@ -1,4 +1,4 @@
-export var validLicenseNumbers = [
+export const validLicenseNumbers = [
     /^([A-Z]{2})(\d{2})(\d{2})$/,       // 1     XX-99-99    (since 1951)
     /^(\d{2})(\d{2})([A-Z]{2})$/,       // 2     99-99-XX    (since 1965)
     /^(\d{2})([A-Z]{2})(\d{2})$/,       // 3     99-XX-99    (since 1973)
@@ -13,10 +13,9 @@ export var validLicenseNumbers = [
     /^([A-Z]{1})(\d{2})([A-Z]{3})$/,    // 12    X-99-XXX
     /^(\d{1})([A-Z]{2})(\d{3})$/,       // 13    9-XX-999
     /^(\d{3})([A-Z]{2})(\d{1})$/,       // 14    999-XX-9
-    /^(\d{3})(\d{2})([A-Z]{1})$/,       //       999-99-X
+    /^(\d{3})(\d{2})([A-Z]{1})$/,       //       999-99-X    (toekomstige nummerplaten)
     /^([A-Z]{3})(\d{2})(\d{1})$/,       //       XXX-99-9
     /^([A-Z]{3})([A-Z]{2})(\d{1})$/,    //       XXX-XX-9
 ];
-export var validChargeNumber = "abc";
+export const validChargeNumber =  /^([A-Z]{2})(.{3})(.+)$/
 // NL-TNM-250672-4 voorbeeld laadpas
-// /^([A-Z]{2})(.{3})(.+)$/ regex voor de laadpas?
