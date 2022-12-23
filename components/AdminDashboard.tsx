@@ -1,8 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
-import Chart from "./Chart";
-import TicketCountAdmin from "./TicketCountAdmin";
+import Chart from "../components/Chart";
+import TicketCountAdmin from "../components/TicketCountAdmin";
+import { Profile } from "../Types/Profiles";
+import { useSessionContext } from "../context/sessionContext";
+import LotterySystemAdmin from "./LotterySystemAdmin";
+import TicketCount from "./TicketCount";
 
 //make 6 different charging stations with a status
+
+interface Props {
+  profile: Profile;
+}
 
 const STATUS_KEY = {
   BEING_USED: "Being_used",
@@ -140,11 +148,16 @@ const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   );
 };
 
+interface Props {
+  session: any;
+}
 
-
-const AdminDashboard: React.FC = () => {
+const AdminDashboard: React.FC<Props> = ({ profile }) => {
   //making a admin dashboard
   const [chargeStationData, setChargeStationData] = useState<ChargeType[]>([]);
+  const [ticketCount, setTicketCount] = useState(0);
+  const { session } = useSessionContext();
+  const Profile = profile;
 
   useEffect(() => {
     getFakeData();
@@ -178,7 +191,8 @@ const AdminDashboard: React.FC = () => {
               status={chargeStation.status}
             />
           ))}
-          <TicketCountAdmin></TicketCountAdmin>
+          <TicketCountAdmin ticketCount={ticketCount} setTicketCount={setTicketCount}></TicketCountAdmin>
+          <LotterySystemAdmin setTicketCount={setTicketCount} />
         </div>
       </div>
     </div>

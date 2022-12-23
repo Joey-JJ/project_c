@@ -24,7 +24,7 @@ const Navbar: React.FC<NavProps> = ({ children }: any) => {
       {/* Navbar content (admin gedeelte) */}
       <div className="drawer-content">
         {isAdmin ? (
-        <nav className="navbar bg-base-100 border-2">
+        <nav className="navbar bg-[#B09E7E] border-0">
           {session && (
             <label
               htmlFor="my-drawer"
@@ -47,7 +47,7 @@ const Navbar: React.FC<NavProps> = ({ children }: any) => {
           </Link>
           </div>
             <div className="card-title navbar-end"></div>
-            <div className="card-title navbar-end bg-">Admin Dashboard</div>
+            <div className="card-title navbar-end text-black">Admin Dashboard</div>
           <div className="w-12" />
         </nav>) : 
         /* Navbar content (visitor gedeelte) */

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
+import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 
 const Register: React.FC = () => {
   const [cardnumber, setCardnumber] = useState("");
@@ -9,10 +10,48 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { session } = useSessionContext();
 
+  const validateInput = () => {
+    // input validation nummerplaat
+    const testLicenseNumber = (regexes: any, number:any ) => {
+      for (let i = 0; i < 18; i++){
+        if (regexes[i].test(number)) {
+          return true
+        }
+          alert("Please enter a valid license number")
+          return false
+      }
+    }
+    // input validation oplaadpas
+    const testCardNumber = (regex: any, number: any) => {
+      if (regex.test(number) && number.length < 15) {
+        return true
+      }
+      else{
+        alert("Please enter a valid card number")
+        return false
+      }
+    }
+    if (testLicenseNumber(validLicenseNumbers, License.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
+      console.log(License, cardnumber)  
+      return true
+    }
+    else{
+      return false
+    }
+  }
+
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (validateInput()){
+      alert("Your details are valid!")
+    }
+    else{
+      alert("details invalid")
+      return
+    }
     try {
+
       setLoading(true);
       const { error } = await supabase.from("profiles").insert([
         {
