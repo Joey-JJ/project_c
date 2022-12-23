@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 
-const Register = () => {
+interface Props {
+  setHasProfileData: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Register: React.FC<Props> = ({ setHasProfileData }) => {
   const [cardnumber, setCardnumber] = useState("");
-  const [License, setLicense] = useState("");
+  const [license, setLicense] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -15,15 +19,19 @@ const Register = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { error } = await supabase.from("profiles").insert([
-        {
-          uuid: session?.user.id,
-          username: name,
-          license: License,
-          card: cardnumber,
-          email: session?.user.email,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from("profiles")
+        .update({
+          full_name: name,
+          license: license,
+          charge_card: cardnumber,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", session?.user.id);
+
+      if (!error) {
+        setHasProfileData(true);
+      }
       if (error) throw error;
     } catch (error: any) {
       alert(error.error_description || error.message);
@@ -45,7 +53,7 @@ const Register = () => {
                 type="text"
                 placeholder="XX-XXX-XX"
                 className="input input-bordered w-full max-w-xs"
-                value={License}
+                value={license}
                 onChange={(e) => setLicense(e.target.value)}
               />
             </div>

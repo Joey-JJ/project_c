@@ -18,7 +18,8 @@ const Home: NextPage = () => {
       ? true
       : false;
   const [fetchError, setFetchError] = useState("");
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [hasProfileData, setHasProfileData] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -35,6 +36,13 @@ const Home: NextPage = () => {
       }
       if (data) {
         setProfile(data);
+        if (
+          (data as Profile).full_name &&
+          (data as Profile).license_number &&
+          (data as Profile).charge_card
+        ) {
+          setHasProfileData(true);
+        }
         setFetchError("");
       }
     };
@@ -46,13 +54,14 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <>
       {fetchError && <p>{fetchError}</p>}
-      {profile && isAdmin && <AdminDashboard />}
-      {/* // session back to profile when fixing register form */}
-      {profile && !isAdmin && <VisitorDashboard profile={profile} />}
-      {!profile && <Register />}
-    </div>
+      {hasProfileData && isAdmin && <AdminDashboard />}
+      {hasProfileData && !isAdmin && (
+        <VisitorDashboard profile={profile as Profile} />
+      )}
+      {!hasProfileData && <Register setHasProfileData={setHasProfileData} />}
+    </>
   );
 };
 
