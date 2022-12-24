@@ -29,7 +29,7 @@ const AdminAccountToevoegen = () => {
             placeholder="Add name"
             className="input input-bordered"
             name="username"
-            value={inputs.username || ""} 
+            value=""
             onChange={handleChange}
           />
         </div>
@@ -39,7 +39,7 @@ const AdminAccountToevoegen = () => {
             placeholder="Add email"
             className="input input-bordered"
             name="email"
-            value={inputs.email || ""} 
+            value=""
             onChange={handleChange}
           />
         </div>
@@ -49,7 +49,7 @@ const AdminAccountToevoegen = () => {
             placeholder="Add cardnumber"
             className="input input-bordered"
             name="card_number"
-            value={inputs.card_number || ""} 
+            value=""
             onChange={handleChange}
           />
         </div>
@@ -59,7 +59,7 @@ const AdminAccountToevoegen = () => {
             placeholder="Add license plate"
             className="input input-bordered"
             name="license_number"
-            value={inputs.license_number || ""} 
+            value=""
             onChange={handleChange}
           />
         </div>
