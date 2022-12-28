@@ -4,7 +4,7 @@ import TicketCountAdmin from "../components/TicketCountAdmin";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import LotterySystemAdmin from "./LotterySystemAdmin";
-import TicketCount from "./TicketCount";
+
 
 //make 6 different charging stations with a status
 
@@ -149,7 +149,7 @@ const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
 };
 
 interface Props {
-  session: any;
+  profile: Profile;
 }
 
 const AdminDashboard: React.FC<Props> = ({ profile }) => {
