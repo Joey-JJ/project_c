@@ -38,7 +38,6 @@ const Register: React.FC = () => {
       }
     }
     if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-      console.log(license, cardnumber)  
       return true
     }
     else{
@@ -50,10 +49,9 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (validateInput()){
-      alert("Your details are valid!")
+      console.log("Details validated")
     }
     else{
-      alert("details invalid")
       return
     }
     try {
@@ -63,8 +61,8 @@ const Register: React.FC = () => {
         {
           id: session?.user.id,
           full_name: name,
-          license_number: license,
-          charge_card: cardnumber,
+          license_number: license.toUpperCase(),
+          charge_card: cardnumber.toUpperCase(),
         },
       ]);
       if (error) throw error;
@@ -73,6 +71,7 @@ const Register: React.FC = () => {
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
+      
     }
   };
 
@@ -87,7 +86,7 @@ const Register: React.FC = () => {
               </label>
               <input
                 type="text"
-                placeholder="XX-XXX-XX"
+                placeholder="Eg: 1-CAV-01"
                 className="input input-bordered w-full max-w-xs"
                 value={license}
                 onChange={(e) => setLicense(e.target.value)}
@@ -99,7 +98,7 @@ const Register: React.FC = () => {
               </label>
               <input
                 type="text"
-                placeholder="XX-XXX-XX-XXXXXX"
+                placeholder="Eg: NL-CAV-123456-7"
                 className="input input-bordered w-full max-w-xs"
                 value={cardnumber}
                 onChange={(e) => setCardnumber(e.target.value)}
@@ -111,7 +110,7 @@ const Register: React.FC = () => {
               </label>
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="Eg: Jan Peter Balkenende"
                 className="input input-bordered w-full max-w-xs"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -119,7 +118,7 @@ const Register: React.FC = () => {
             </div>
             <div className="form-control mt-6">
               <button type="submit" className="btn btn-primary">
-                <span>{loading ? "Loading" : "Registered"}</span>
+                <span>{loading ? "Loading" : "Register"}</span>
               </button>
             </div>
           </form>
