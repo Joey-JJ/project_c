@@ -6,6 +6,7 @@ import type { ChargeStationType } from "../Types/ChargeStationType";
 const ChargeStations: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+  const [currentlyCharging, setCurrentlyCharging] = useState<boolean>(false);
   const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
     []
   );
@@ -46,11 +47,23 @@ const ChargeStations: React.FC = () => {
     );
 
   return (
-    <div className="grid gap-4">
-      {chargingStations.map((station: ChargeStationType) => (
-        <ChargeStation key={station.id} station={station} />
-      ))}
-    </div>
+    <>
+      <h1>
+        You are currently not charging, start a session by choosing a free
+        charger.
+      </h1>
+      <div className="grid grid-cols-2 gap-2">
+        {chargingStations
+          .sort((a, b) => a.id - b.id)
+          .map((station: ChargeStationType) => (
+            <ChargeStation
+              key={station.id}
+              station={station}
+              currentlyCharging={currentlyCharging}
+            />
+          ))}
+      </div>
+    </>
   );
 };
 

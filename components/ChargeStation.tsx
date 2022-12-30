@@ -3,9 +3,10 @@ import type { ChargeStationType } from "../Types/ChargeStationType";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 
-const ChargeStation: React.FC<{ station: ChargeStationType }> = ({
-  station,
-}) => {
+const ChargeStation: React.FC<{
+  station: ChargeStationType;
+  currentlyCharging: boolean;
+}> = ({ station, currentlyCharging }) => {
   const { session } = useSessionContext();
 
   const startChargingHandler = async () => {
@@ -16,6 +17,19 @@ const ChargeStation: React.FC<{ station: ChargeStationType }> = ({
         charger_id: station.id,
       },
     ]);
+
+    if (error) {
+      alert(error.message);
+    }
+
+    const { error: error2 } = await supabase
+      .from("charging_stations")
+      .update({ is_taken: true })
+      .eq("id", station.id);
+
+    if (error2) {
+      alert(error2.message);
+    }
   };
 
   return (
@@ -23,7 +37,11 @@ const ChargeStation: React.FC<{ station: ChargeStationType }> = ({
       <h1>
         {!station.is_supercharger ? "Charger" : "Supercharger"} - {station.id}
       </h1>
-      <button onClick={startChargingHandler} className="btn-primary btn-xs">
+      <button
+        onClick={startChargingHandler}
+        className="btn-primary btn-xs"
+        disabled={station.is_taken}
+      >
         Start charging
       </button>
     </div>
