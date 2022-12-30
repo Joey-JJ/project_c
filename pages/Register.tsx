@@ -23,7 +23,7 @@ const Register: React.FC<Props> = ({ setHasProfileData }) => {
         .from("profiles")
         .update({
           full_name: name,
-          license: license,
+          license_number: license,
           charge_card: cardnumber,
           updated_at: new Date().toISOString(),
         })

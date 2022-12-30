@@ -1,69 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../utils/supabaseClient";
+import ChargeStation from "./ChargeStation";
+import type { ChargeStationType } from "../Types/ChargeStationType";
 
 const ChargeStations: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
+    []
+  );
+
+  useEffect(() => {
+    const fetchChargeStations = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("charging_stations")
+          .select("*");
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          console.log(data);
+          setChargingStations(data as ChargeStationType[]);
+        }
+      } catch (error: any) {
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChargeStations();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
+  if (!chargingStations)
+    return (
+      <div>
+        Could not fetch charging data, check your internet connection or try
+        again later.
+      </div>
+    );
+
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Charging station</th>
-            <th>Status</th>
-            <th>Occupation status</th>
-            <th>Status (color)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th></th>
-            <td>Regular 1</td>
-            <td className="text-red-600">Charging</td>
-            <td>Occupied</td>
-            <td>Red</td>
-          </tr>
-
-          <tr>
-            <th></th>
-            <td>Regular 2</td>
-            <td className="text-orange-600">Not charging</td>
-            <td>Occupied</td>
-            <td>Orange</td>
-          </tr>
-
-          <tr>
-            <th></th>
-            <td>Regular 3</td>
-            <td className="text-green-600">Not charging</td>
-            <td>Free</td>
-            <td>Green</td>
-          </tr>
-
-          <tr>
-            <th></th>
-            <td>Regular 4</td>
-            <td className="text-green-600">Not charging</td>
-            <td>Free</td>
-            <td>Green</td>
-          </tr>
-
-          <tr>
-            <th></th>
-            <td>Fast 1</td>
-            <td className="text-red-600">Charging</td>
-            <td>Occupied</td>
-            <td>Red</td>
-          </tr>
-
-          <tr>
-            <th></th>
-            <td>Fast 2</td>
-            <td className="text-green-600">Not charging</td>
-            <td>Free</td>
-            <td>Green</td>
-          </tr>
-        </tbody>
-      </table>
+    <div>
+      {chargingStations.map((station: ChargeStationType) => (
+        <ChargeStation key={station.id} station={station} />
+      ))}
     </div>
   );
 };
+
 export default ChargeStations;

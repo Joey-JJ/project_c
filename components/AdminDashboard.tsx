@@ -5,6 +5,7 @@ import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import LotterySystemAdmin from "./LotterySystemAdmin";
 import TicketCount from "./TicketCount";
+import ChargeStations from "./ChargeStations";
 
 //make 6 different charging stations with a status
 
@@ -116,7 +117,7 @@ const badgeColor = (status: string) => {
   }
 };
 
-const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
+export const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
   return (
     <div className="card w-70 lg:w-100 bg-base-100 card-bordered shadow-xl overflow-visible">
       <div className="card-body items-center lg:items-baseline">
@@ -184,14 +185,11 @@ const AdminDashboard: React.FC<Props> = ({ profile }) => {
     <div>
       <div className="container mx-auto min-h-screen flex flex-col items-center overflow-visible mt-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {chargeStationData.map((chargeStation, idx) => (
-            <ChargeStation
-              key={idx}
-              name={chargeStation.name}
-              status={chargeStation.status}
-            />
-          ))}
-          <TicketCountAdmin ticketCount={ticketCount} setTicketCount={setTicketCount}></TicketCountAdmin>
+          <ChargeStations />
+          <TicketCountAdmin
+            ticketCount={ticketCount}
+            setTicketCount={setTicketCount}
+          ></TicketCountAdmin>
           <LotterySystemAdmin setTicketCount={setTicketCount} />
         </div>
       </div>
