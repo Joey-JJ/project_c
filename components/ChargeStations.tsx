@@ -5,6 +5,7 @@ import type { ChargeStationType } from "../Types/ChargeStationType";
 
 const ChargeStations: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
     []
   );
@@ -17,11 +18,11 @@ const ChargeStations: React.FC = () => {
           .select("*");
 
         if (error) {
+          setError(true);
           throw error;
         }
 
         if (data) {
-          console.log(data);
           setChargingStations(data as ChargeStationType[]);
         }
       } catch (error: any) {
@@ -36,7 +37,7 @@ const ChargeStations: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  if (!chargingStations)
+  if (!chargingStations && error && !loading)
     return (
       <div>
         Could not fetch charging data, check your internet connection or try
@@ -45,7 +46,7 @@ const ChargeStations: React.FC = () => {
     );
 
   return (
-    <div>
+    <div className="grid gap-4">
       {chargingStations.map((station: ChargeStationType) => (
         <ChargeStation key={station.id} station={station} />
       ))}
