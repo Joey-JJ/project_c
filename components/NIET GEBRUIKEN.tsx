@@ -31,8 +31,8 @@ const Register: React.FC = () => {
         return false
       }
     }
-    if (testLicenseNumber(validLicenseNumbers, License.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-      console.log(License, cardnumber)  
+    if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) || testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
+      console.log(license, cardnumber)  
       return true
     }
     else{
