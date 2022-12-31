@@ -45,7 +45,28 @@ const AccountInfo = () => {
     return <div>Loading...</div>;
   };
 
+  const fetchProfile = async () => {
+    setLoading(true);
+    if (!session?.user.id) return;
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", session?.user.id)
+      .single();
+    if (error) {
+      console.log("error: " + error);
+    }
 
+    if (data) {
+      console.log(data);
+      setProfile(data);
+      setLoading(false);
+    }
+
+    if (newProfile?.full_name !== null && newProfile?.full_name !== undefined) {
+      setfirtsLetter(Array.from(newProfile.full_name)[0]);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "Email") {
@@ -64,6 +85,7 @@ const AccountInfo = () => {
       });
       if (error) {
         console.log("error: " + error);
+        return;
       }
 
       if (data) {
@@ -76,13 +98,9 @@ const AccountInfo = () => {
         .eq("id", session?.user.id);
       if (error) {
         console.log("error: " + error);
+        return;
       }
-
-      if (data) {
-        console.log(data);
-        setProfile(data[0]);
-
-      }
+      fetchProfile();
     }
   };
 
