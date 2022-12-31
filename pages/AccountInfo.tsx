@@ -11,10 +11,14 @@ const AccountInfo = () => {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile>();
   const [firtsLetter, setfirtsLetter] = useState<string>("");
+  const [newProfile, setNewProfile] = useState<Profile>({} as Profile);
+  const [newEmail, setNewEmail] = useState<string>("");
+
 
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
+      if (!session?.user.id) return;
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
@@ -30,16 +34,58 @@ const AccountInfo = () => {
         setLoading(false);
       }
 
-      if ( profile?.full_name !== null  && profile?.full_name !== undefined ) {
+      if (profile?.full_name !== null && profile?.full_name !== undefined) {
         setfirtsLetter(Array.from(profile.full_name)[0]);
       }
     };
     fetchProfile();
-  }, [session]);
+  }, [session?.user.id]);
 
   if (loading) {
     return <div>Loading...</div>;
-  }
+  };
+
+
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "Email") {
+      setNewEmail(e.target.value);
+    } else {
+      const { name, value } = e.target;
+      setNewProfile({ ...newProfile, [name]: value });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (newEmail) {
+      const { data, error } = await supabase.auth.updateUser({
+        email: newEmail,
+      });
+      if (error) {
+        console.log("error: " + error);
+      }
+
+      if (data) {
+        console.log(data);
+      }
+    } else {
+      const { data, error } = await supabase
+        .from("profiles")
+        .update(newProfile)
+        .eq("id", session?.user.id);
+      if (error) {
+        console.log("error: " + error);
+      }
+
+      if (data) {
+        console.log(data);
+        setProfile(data[0]);
+
+      }
+    }
+  };
+
 
   return (
     <div>
@@ -53,30 +99,86 @@ const AccountInfo = () => {
           <div className="stat">
             <div className="stat-title">Name</div>
             <div className="stat-value text-sm">{profile?.full_name}</div>
-            <div className="stat-actions">
-              <button className="btn btn-primary btn-sm btn-wide">Edit</button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-control m-3">
+                <label className="input-group input-group-vertical">
+                  <span>Name</span>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    className="input input-bordered"
+                    name="full_name"
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </div>
+              <div className="stat-actions">
+                <button type="submit" className="btn btn-primary btn-sm btn-wide">Edit</button>
+              </div>
+            </form>
           </div>
           <div className="stat">
             <div className="stat-title">Email</div>
             <div className="stat-value text-sm">{session?.user.email}</div>
-            <div className="stat-actions">
-              <button className="btn btn-primary btn-sm btn-wide">Edit</button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-control m-3">
+                <label className="input-group input-group-vertical">
+                  <span>Email</span>
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    className="input input-bordered"
+                    name="Email"
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </div>
+              <div className="stat-actions">
+                <button type="submit" className="btn btn-primary btn-sm btn-wide">Edit</button>
+              </div>
+            </form>
           </div>
           <div className="stat">
             <div className="stat-title">Card number</div>
             <div className="stat-value text-sm">{profile?.charge_card}</div>
-            <div className="stat-actions">
-              <button className="btn btn-primary btn-sm btn-wide">Edit</button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-control m-3">
+                <label className="input-group input-group-vertical">
+                  <span>Card number</span>
+                  <input
+                    type="text"
+                    placeholder="Card number"
+                    className="input input-bordered"
+                    name="charge_card"
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </div>
+              <div className="stat-actions">
+                <button type="submit" className="btn btn-primary btn-sm btn-wide">Edit</button>
+              </div>
+            </form>
           </div>
           <div className="stat">
             <div className="stat-title">License number</div>
             <div className="stat-value text-sm">{profile?.license_number}</div>
-            <div className="stat-actions">
-              <button className="btn btn-primary btn-sm btn-wide">Edit</button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-control m-3">
+                <label className="input-group input-group-vertical">
+                  <span>License number</span>
+                  <input
+                    type="text"
+                    placeholder="License number"
+                    className="input input-bordered"
+                    name="license_number"
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </div>
+              <div className="stat-actions">
+                <button type="submit" className="btn-primary btn-sm btn-wide">Edit</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
