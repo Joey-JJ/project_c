@@ -9,7 +9,16 @@ const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const { session } = useSessionContext();
-
+  const checkDoubleHyphen = (code: any) => {
+    let count = 0;
+    for (let i = 0; i < code.length; i++){
+      if (code.charAt(i) == "-"){
+        count++
+      }
+    }
+    if (count > 1){return true}
+    else{return false}
+  }
   const validateInput = () => {
     // input validation nummerplaat
     const testLicenseNumber = (regexes: any, number:any ) => {
@@ -37,10 +46,13 @@ const Register: React.FC = () => {
         return false
       }
     }
-    if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-      return true
+    if (checkDoubleHyphen(license) && checkDoubleHyphen(cardnumber)){
+      if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
+        return true
+      }
     }
     else{
+      alert("Your card number or license number isn't correct, try again!")
       return false
     }
   }
