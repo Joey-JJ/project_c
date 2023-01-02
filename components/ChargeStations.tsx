@@ -1,60 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
-import ChargeStation from "./ChargeStation";
+import { ChargeStation } from "./ChargeStation";
 import type { ChargeStationType } from "../Types/ChargeStationType";
 import { useSessionContext } from "../context/sessionContext";
+import { ChargingSessionType } from "../Types/ChargingSessionType";
 
-const ChargeStations: React.FC = () => {
+export const ChargeStations: React.FC = () => {
   const { session } = useSessionContext();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-  const [currentlyCharging, setCurrentlyCharging] = useState<boolean>(false);
   const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
     []
   );
-
-  const stopChargingHandler = async () => {
-    try {
-      //update charging session
-      const { error } = await supabase
-        .from("charging_sessions")
-        .update({ ended_at: new Date().toISOString() })
-        .eq("taken_by", session?.user.id)
-        .order("started_at", { ascending: false })
-        .limit(1);
-
-      if (error) {
-        throw error;
-      }
-
-      //update charging station
-      const { error: error2 } = await supabase
-        .from("charging_stations")
-        .update({ is_taken: false, taken_by: null })
-        .eq("taken_by", session?.user.id);
-
-      if (error2) {
-        throw error2;
-      }
-
-      setCurrentlyCharging(false);
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
+  const [isCurrentlyCharging, setIsCurrentlyCharging] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const fetchChargeStations = async () => {
+      setLoading(true);
       try {
         const { data, error } = await supabase
           .from("charging_stations")
-          .select("*");
+          .select("*")
+          .order("id", { ascending: true });
 
         if (error) {
           setError(true);
           throw error;
         }
-
         if (data) {
           setChargingStations(data as ChargeStationType[]);
         }
@@ -65,53 +38,67 @@ const ChargeStations: React.FC = () => {
       }
     };
 
+    const fetchActiveSessions = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("charging_sessions")
+          .select("*")
+          .is("ended_at", null)
+          .order("id", { ascending: true });
+
+        if (error) {
+          setError(true);
+          throw error;
+        }
+
+        if (data) {
+          setIsCurrentlyCharging(
+            (data as ChargingSessionType[]).some((chargingSession) => {
+              if (chargingSession.taken_by === session?.user.id) {
+                return true;
+              }
+            })
+          );
+        }
+      } catch (error: any) {
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActiveSessions();
     fetchChargeStations();
-  }, []);
+  }, [session?.user.id]);
 
   if (loading) return <div>Loading...</div>;
-
-  if (!chargingStations && error && !loading)
+  if (error && !loading) return <div>Erorr, could not fetch data</div>;
+  if (!loading && isCurrentlyCharging)
     return (
       <div>
-        Could not fetch charging data, check your internet connection or try
-        again later.
+        <h3>You are currently charging.</h3>
+        <button
+          className="btn btn-warning"
+          onClick={() => setIsCurrentlyCharging(false)}
+        >
+          Stop charging
+        </button>
       </div>
     );
 
   return (
-    <>
-      {!currentlyCharging && (
-        <h1>
-          You are currently not charging, start a session by choosing a free
-          charger.
-        </h1>
-      )}
-      {currentlyCharging && (
-        <div className="border-2 flex flex-col gap-4 p-4 items-center justify-center">
-          <h1>
-            You are currently charging, please stop the session when you are
-            done.
-          </h1>
-          <button
-            onClick={stopChargingHandler}
-            className="btn btn-warning max-w-xs"
-          >
-            Stop charging
-          </button>
-        </div>
-      )}
-      <div className="grid grid-cols-2 gap-2">
-        {chargingStations
-          .sort((a, b) => a.id - b.id)
-          .map((station: ChargeStationType) => (
-            <ChargeStation
-              key={station.id}
-              station={station}
-              setCurrentlyCharging={setCurrentlyCharging}
-            />
-          ))}
-      </div>
-    </>
+    <div className="grid sm:grid-cols-2 gap-2">
+      {chargingStations.map((station) => (
+        <ChargeStation
+          key={station.id}
+          station={station}
+          chargingStations={chargingStations}
+          setChargingStations={setChargingStations}
+          setIsCurrentlyCharging={setIsCurrentlyCharging}
+        />
+      ))}
+    </div>
   );
 };
 

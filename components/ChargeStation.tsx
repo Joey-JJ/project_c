@@ -1,40 +1,56 @@
-import React, { useState } from "react";
-import type { ChargeStationType } from "../Types/ChargeStationType";
+import React from "react";
+import { ChargeStationType } from "../Types/ChargeStationType";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 
-const ChargeStation: React.FC<{
+type Props = {
   station: ChargeStationType;
-  setCurrentlyCharging: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ station, setCurrentlyCharging }) => {
-  const { session } = useSessionContext();
-  const [taken, setTaken] = useState<boolean>(station.is_taken);
+  chargingStations: ChargeStationType[];
+  setChargingStations: React.Dispatch<
+    React.SetStateAction<ChargeStationType[]>
+  >;
+  setIsCurrentlyCharging: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-  const startChargingHandler = async () => {
+export const ChargeStation: React.FC<Props> = ({
+  station,
+  chargingStations,
+  setChargingStations,
+  setIsCurrentlyCharging,
+}) => {
+  const { session } = useSessionContext();
+  const startCharging = async () => {
     try {
       const { error } = await supabase.from("charging_sessions").insert([
         {
+          charger_id: station.id,
           started_at: new Date().toISOString(),
           taken_by: session?.user.id,
-          charger_id: station.id,
         },
       ]);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       const { error: error2 } = await supabase
         .from("charging_stations")
-        .update({ is_taken: true, taken_by: session?.user.id })
+        .update([
+          {
+            currently_occupied: true,
+          },
+        ])
         .eq("id", station.id);
 
-      if (error2) {
-        throw error2;
-      }
+      if (error2) throw error2;
 
-      setTaken(true);
-      setCurrentlyCharging(true);
+      setChargingStations((prev) => {
+        return prev.map((s) => {
+          if (s.id === station.id) {
+            return { ...s, currently_occupied: true };
+          }
+          return s;
+        });
+      });
+      setIsCurrentlyCharging(true);
     } catch (error: any) {
       alert(error.message);
     }
@@ -42,22 +58,31 @@ const ChargeStation: React.FC<{
 
   return (
     <div
-      className={`p-4 border-2 ${
-        taken && "border-error bg-red-200"
-      } flex flex-col gap-2 justify-between items-center`}
+      className={`border-2 border-gray-600 p-4 shadow-lg flex flex-col gap-2 justify-center items-center rounded-sm ${
+        chargingStations.find((s) => s.id === station.id)?.currently_occupied &&
+        "bg-red-300"
+      }`}
     >
       <h1>
-        {!station.is_supercharger ? "Charger" : "Supercharger"} - {station.id}
+        {!chargingStations.find((s) => s.id === station.id)?.is_supercharger
+          ? "Charger"
+          : "Supercharger"}
       </h1>
       <button
-        onClick={startChargingHandler}
-        className={`${!taken ? "btn-primary" : "btn-error"} btn-xs`}
-        disabled={taken}
+        className={`btn-xs ${
+          chargingStations.find((s) => s.id === station.id)?.currently_occupied
+            ? "btn-error"
+            : "btn-primary"
+        }`}
+        onClick={startCharging}
+        disabled={
+          chargingStations.find((s) => s.id === station.id)?.currently_occupied
+        }
       >
-        {taken ? "Taken" : "Start charging"}
+        {chargingStations.find((s) => s.id === station.id)?.currently_occupied
+          ? "Taken"
+          : "Start Charging"}
       </button>
     </div>
   );
 };
-
-export default ChargeStation;
