@@ -56,10 +56,13 @@ const Home: NextPage = () => {
   return (
     <>
       {fetchError && <p>{fetchError}</p>}
-      {hasProfileData && isAdmin && <AdminDashboard />}
       {hasProfileData && !isAdmin && (
         <VisitorDashboard profile={profile as Profile} />
       )}
+      {hasProfileData && isAdmin && (
+        <AdminDashboard profile={profile as Profile} />
+      )}
+      
       {!hasProfileData && <Register setHasProfileData={setHasProfileData} />}
     </>
   );
