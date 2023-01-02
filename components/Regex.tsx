@@ -16,6 +16,7 @@ export const validLicenseNumbers = [
     /^(\d{3})(\d{2})([A-Z]{1})$/,       //       999-99-X    (toekomstige nummerplaten)
     /^([A-Z]{3})(\d{2})(\d{1})$/,       //       XXX-99-9
     /^([A-Z]{3})([A-Z]{2})(\d{1})$/,    //       XXX-XX-9
+    // allemaal 6 lang, gebruik length voordat je for loop runt
 ];
 export const validChargeNumber =  /^([A-Z]{2})(.{3})(.+)$/
 // NL-TNM-250672-4 voorbeeld laadpas

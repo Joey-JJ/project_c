@@ -1,42 +1,77 @@
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
+import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 
-interface Props {
-  setHasProfileData: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Register: React.FC<Props> = ({ setHasProfileData }) => {
+const Register: React.FC = () => {
   const [cardnumber, setCardnumber] = useState("");
   const [license, setLicense] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { session } = useSessionContext();
+
+  const validateInput = () => {
+    // input validation nummerplaat
+    const testLicenseNumber = (regexes: any, number:any ) => {
+      if (number.length != 6){
+        alert("Please enter a valid license number")
+        return false
+      }
+      for (let i = 0; i < 18; i++){
+        if (regexes[i].test(number)) {
+          return true
+        }
+        else if(i == 18){
+          alert("Please enter a valid license number")
+          return false
+        }
+      }
+    }
+    // input validation oplaadpas
+    const testCardNumber = (regex: any, number: any) => {
+      if (regex.test(number) && number.length < 15) {
+        return true
+      }
+      else{
+        alert("Please enter a valid card number")
+        return false
+      }
+    }
+    if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
+      return true
+    }
+    else{
+      return false
+    }
+  }
 
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (validateInput()){
+      console.log("Details validated")
+    }
+    else{
+      return
+    }
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("profiles")
-        .update({
-          full_name: name,
-          license: license,
-          charge_card: cardnumber,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", session?.user.id);
 
-      if (!error) {
-        setHasProfileData(true);
-      }
+      setLoading(true);
+      const { error } = await supabase.from("profiles").insert([
+        {
+          id: session?.user.id,
+          full_name: name,
+          license_number: license.toUpperCase(),
+          charge_card: cardnumber.toUpperCase(),
+        },
+      ]);
       if (error) throw error;
     } catch (error: any) {
+      console.log(error);
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
+      
     }
   };
 
@@ -51,7 +86,7 @@ const Register: React.FC<Props> = ({ setHasProfileData }) => {
               </label>
               <input
                 type="text"
-                placeholder="XX-XXX-XX"
+                placeholder="Eg: 1-CAV-01"
                 className="input input-bordered w-full max-w-xs"
                 value={license}
                 onChange={(e) => setLicense(e.target.value)}
@@ -63,7 +98,7 @@ const Register: React.FC<Props> = ({ setHasProfileData }) => {
               </label>
               <input
                 type="text"
-                placeholder="XX-XXX-XX-XXXXXX"
+                placeholder="Eg: NL-CAV-123456-7"
                 className="input input-bordered w-full max-w-xs"
                 value={cardnumber}
                 onChange={(e) => setCardnumber(e.target.value)}
@@ -75,7 +110,7 @@ const Register: React.FC<Props> = ({ setHasProfileData }) => {
               </label>
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="Eg: Jan Peter Balkenende"
                 className="input input-bordered w-full max-w-xs"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -83,7 +118,7 @@ const Register: React.FC<Props> = ({ setHasProfileData }) => {
             </div>
             <div className="form-control mt-6">
               <button type="submit" className="btn btn-primary">
-                <span>{loading ? "Loading" : "Registered"}</span>
+                <span>{loading ? "Loading" : "Register"}</span>
               </button>
             </div>
           </form>
