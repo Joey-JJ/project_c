@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
-import { ChargeStation } from "./ChargeStation";
+// import { ChargeStation } from "./ChargeStation";
 import type { ChargeStationType } from "../Types/ChargeStationType";
 import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
+import { ChargeStation } from "./ChargeStation";
 
 export const ChargeStations: React.FC = () => {
   const { session } = useSessionContext();
@@ -72,16 +73,107 @@ export const ChargeStations: React.FC = () => {
     fetchChargeStations();
   }, [session?.user.id]);
 
+  const stopChargingHandler = async () => {
+    setLoading(true);
+    try {
+      // Update chargeStation in db
+      const { error } = await supabase
+        .from("charging_stations")
+        .update([
+          {
+            currently_occupied: false,
+            current_user_id: null,
+          },
+        ])
+        .eq("current_user_id", session?.user.id);
+
+      if (error) throw error;
+
+      // Update chargeStation in state
+      setChargingStations((prev) => {
+        return prev.map((station) => {
+          if (station.current_user_id === session?.user.id) {
+            return {
+              ...station,
+              currently_occupied: false,
+              current_user_id: null,
+            };
+          }
+          return station;
+        });
+      });
+
+      // Update chargingSession in db
+      const { error: error2 } = await supabase
+        .from("charging_sessions")
+        .update([
+          {
+            ended_at: new Date(),
+          },
+        ])
+        .eq("taken_by", session?.user.id)
+        .is("ended_at", null);
+
+      if (error2) throw error2;
+
+      setIsCurrentlyCharging(false);
+    } catch (error: any) {
+      setError(true);
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startCharging = async (station: ChargeStationType) => {
+    try {
+      const { error } = await supabase.from("charging_sessions").insert([
+        {
+          charger_id: station.id,
+          started_at: new Date().toISOString(),
+          taken_by: session?.user.id,
+        },
+      ]);
+
+      if (error) throw error;
+
+      const { error: error2 } = await supabase
+        .from("charging_stations")
+        .update([
+          {
+            currently_occupied: true,
+            current_user_id: session?.user.id,
+          },
+        ])
+        .eq("id", station.id);
+
+      if (error2) throw error2;
+
+      setChargingStations((prev) => {
+        return prev.map((station) => {
+          if (station.current_user_id === session?.user.id) {
+            return {
+              ...station,
+              currently_occupied: true,
+              current_user_id: session?.user.id,
+            };
+          }
+          return station;
+        });
+      });
+      setIsCurrentlyCharging(true);
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
-  if (error && !loading) return <div>Erorr, could not fetch data</div>;
+  if (error && !loading) return <div>Error, could not fetch data</div>;
   if (!loading && isCurrentlyCharging)
     return (
       <div>
         <h3>You are currently charging.</h3>
-        <button
-          className="btn btn-warning"
-          onClick={() => setIsCurrentlyCharging(false)}
-        >
+        <button className="btn btn-warning" onClick={stopChargingHandler}>
           Stop charging
         </button>
       </div>
@@ -94,8 +186,7 @@ export const ChargeStations: React.FC = () => {
           key={station.id}
           station={station}
           chargingStations={chargingStations}
-          setChargingStations={setChargingStations}
-          setIsCurrentlyCharging={setIsCurrentlyCharging}
+          startCharging={startCharging}
         />
       ))}
     </div>

@@ -1,66 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ChargeStationType } from "../Types/ChargeStationType";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
+import { stat } from "fs";
 
 type Props = {
   station: ChargeStationType;
   chargingStations: ChargeStationType[];
-  setChargingStations: React.Dispatch<
-    React.SetStateAction<ChargeStationType[]>
-  >;
-  setIsCurrentlyCharging: React.Dispatch<React.SetStateAction<boolean>>;
+  startCharging: (station: ChargeStationType) => void;
 };
 
 export const ChargeStation: React.FC<Props> = ({
   station,
   chargingStations,
-  setChargingStations,
-  setIsCurrentlyCharging,
+  startCharging,
 }) => {
   const { session } = useSessionContext();
-  const startCharging = async () => {
-    try {
-      const { error } = await supabase.from("charging_sessions").insert([
-        {
-          charger_id: station.id,
-          started_at: new Date().toISOString(),
-          taken_by: session?.user.id,
-        },
-      ]);
+  const [isOccupied, setIsOccupied] = useState<boolean | undefined>(false);
 
-      if (error) throw error;
-
-      const { error: error2 } = await supabase
-        .from("charging_stations")
-        .update([
-          {
-            currently_occupied: true,
-          },
-        ])
-        .eq("id", station.id);
-
-      if (error2) throw error2;
-
-      setChargingStations((prev) => {
-        return prev.map((s) => {
-          if (s.id === station.id) {
-            return { ...s, currently_occupied: true };
-          }
-          return s;
-        });
-      });
-      setIsCurrentlyCharging(true);
-    } catch (error: any) {
-      alert(error.message);
+  useEffect(() => {
+    if (chargingStations.length > 0) {
+      const a = chargingStations.find(
+        (s) => s.id === station.id
+      )?.currently_occupied;
+      setIsOccupied(a);
     }
-  };
+  }, [station.id, chargingStations]);
 
   return (
     <div
+      key={station.id}
       className={`border-2 border-gray-600 p-4 shadow-lg flex flex-col gap-2 justify-center items-center rounded-sm ${
-        chargingStations.find((s) => s.id === station.id)?.currently_occupied &&
-        "bg-red-300"
+        isOccupied && "bg-red-300"
       }`}
     >
       <h1>
@@ -69,19 +40,11 @@ export const ChargeStation: React.FC<Props> = ({
           : "Supercharger"}
       </h1>
       <button
-        className={`btn-xs ${
-          chargingStations.find((s) => s.id === station.id)?.currently_occupied
-            ? "btn-error"
-            : "btn-primary"
-        }`}
-        onClick={startCharging}
-        disabled={
-          chargingStations.find((s) => s.id === station.id)?.currently_occupied
-        }
+        className={`btn-xs ${isOccupied ? "btn-error" : "btn-primary"}`}
+        onClick={() => startCharging(station)}
+        disabled={isOccupied}
       >
-        {chargingStations.find((s) => s.id === station.id)?.currently_occupied
-          ? "Taken"
-          : "Start Charging"}
+        {isOccupied ? "Taken" : "Start Charging"}
       </button>
     </div>
   );
