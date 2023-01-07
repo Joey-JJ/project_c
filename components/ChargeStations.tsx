@@ -126,6 +126,7 @@ export const ChargeStations: React.FC = () => {
 
       if (awardTicket) {
         // TODO: Add ticket to user
+        alert("Congratulations! You have been awarded a ticket!");
       }
 
       if (error2) throw error2;
