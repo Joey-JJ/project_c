@@ -6,6 +6,7 @@ import LuutChargeStations from "./LuutChargeStations";
 import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
+import ChargeStations from "./ChargeStations";
 
 interface Props {
   profile: Profile;
@@ -25,24 +26,38 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
         </label>
 
         <LotterySystem profile={Profile} setTicketCount={setTicketCount} />
-        <LuutChargeStations />
+
+        <ChargeStations />
+
         <div className="flex">
           <Notification />
           <TicketCount
             ticketCount={ticketCount}
             setTicketCount={setTicketCount}
           />
-
         </div>
       </div>
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
           <h3 className="text-lg font-bold">How it works</h3>
-          <p className="pt-2"><span className="text-green-500">Green</span>: The charging station is empty and is ready to be used</p>
-          <p className="py-0"><span className="text-orange-500">Orange</span>: The charging station is occupied but isn't charging</p>
-          <p className="py-0"><span className="text-red-600">Red</span>: The charging station is occupied and is charging</p>
-          <p className="py-2">You get tickets by good behaviour, removing your car when it's done charging for example. The tickets can be used for a prize, try collect a lot!</p>
+          <p className="pt-2">
+            <span className="text-green-500">Green</span>: The charging station
+            is empty and is ready to be used
+          </p>
+          <p className="py-0">
+            <span className="text-orange-500">Orange</span>: The charging
+            station is occupied but isn&apos;t charging
+          </p>
+          <p className="py-0">
+            <span className="text-red-600">Red</span>: The charging station is
+            occupied and is charging
+          </p>
+          <p className="py-2">
+            You get tickets by good behaviour, removing your car when it&apos;s
+            done charging for example. The tickets can be used for a prize, try
+            collect a lot!
+          </p>
           <p className="py-0"></p>
         </label>
       </label>

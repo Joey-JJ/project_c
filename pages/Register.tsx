@@ -1,4 +1,4 @@
-  import React, { useState } from "react";
+import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
@@ -12,50 +12,54 @@ const Register: React.FC = () => {
 
   const validateInput = () => {
     // input validation nummerplaat
-    const testLicenseNumber = (regexes: any, number:any ) => {
-      if (number.length != 6){
-        alert("Please enter a valid license number")
-        return false
+    const testLicenseNumber = (regexes: any, number: any) => {
+      if (number.length != 6) {
+        alert("Please enter a valid license number");
+        return false;
       }
-      for (let i = 0; i < 18; i++){
+      for (let i = 0; i < 18; i++) {
         if (regexes[i].test(number)) {
-          return true
-        }
-        else if(i == 18){
-          alert("Please enter a valid license number")
-          return false
+          return true;
+        } else if (i == 18) {
+          alert("Please enter a valid license number");
+          return false;
         }
       }
-    }
+    };
     // input validation oplaadpas
     const testCardNumber = (regex: any, number: any) => {
       if (regex.test(number) && number.length < 15) {
-        return true
+        return true;
+      } else {
+        alert("Please enter a valid card number");
+        return false;
       }
-      else{
-        alert("Please enter a valid card number")
-        return false
-      }
+    };
+    if (
+      testLicenseNumber(
+        validLicenseNumbers,
+        license.replace(/-/g, "").toUpperCase()
+      ) &&
+      testCardNumber(
+        validChargeNumber,
+        cardnumber.replace(/-/g, "").toUpperCase()
+      )
+    ) {
+      return true;
+    } else {
+      return false;
     }
-    if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-      return true
-    }
-    else{
-      return false
-    }
-  }
+  };
 
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (validateInput()){
-      console.log("Details validated")
-    }
-    else{
-      return
+    if (validateInput()) {
+      console.log("Details validated");
+    } else {
+      return;
     }
     try {
-
       setLoading(true);
       const { error } = await supabase.from("profiles").insert([
         {
@@ -71,7 +75,6 @@ const Register: React.FC = () => {
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
-      
     }
   };
 

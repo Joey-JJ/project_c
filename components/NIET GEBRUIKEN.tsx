@@ -12,46 +12,51 @@ const Register: React.FC = () => {
 
   const validateInput = () => {
     // input validation nummerplaat
-    const testLicenseNumber = (regexes: any, number:any ) => {
-      for (let i = 0; i < 18; i++){
+    const testLicenseNumber = (regexes: any, number: any) => {
+      for (let i = 0; i < 18; i++) {
         if (regexes[i].test(number)) {
-          return true
+          return true;
         }
-          alert("Please enter a valid license number")
-          return false
+        alert("Please enter a valid license number");
+        return false;
       }
-    }
+    };
     // input validation oplaadpas
     const testCardNumber = (regex: any, number: any) => {
       if (regex.test(number) && number.length < 15) {
-        return true
+        return true;
+      } else {
+        alert("Please enter a valid card number");
+        return false;
       }
-      else{
-        alert("Please enter a valid card number")
-        return false
-      }
+    };
+    if (
+      testLicenseNumber(
+        validLicenseNumbers,
+        license.replace(/-/g, "").toUpperCase()
+      ) &&
+      testCardNumber(
+        validChargeNumber,
+        cardnumber.replace(/-/g, "").toUpperCase()
+      )
+    ) {
+      console.log(license, cardnumber);
+      return true;
+    } else {
+      return false;
     }
-    if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) || testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-      console.log(license, cardnumber)  
-      return true
-    }
-    else{
-      return false
-    }
-  }
+  };
 
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (validateInput()){
-      alert("Your details are valid!")
-    }
-    else{
-      alert("details invalid")
-      return
+    if (validateInput()) {
+      alert("Your details are valid!");
+    } else {
+      alert("details invalid");
+      return;
     }
     try {
-
       setLoading(true);
       const { error } = await supabase.from("profiles").insert([
         {
