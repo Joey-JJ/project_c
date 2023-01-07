@@ -7,6 +7,7 @@ import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import ChargeStations from "./ChargeStations";
+import Emails from "./Emails";
 
 interface Props {
   profile: Profile;
@@ -36,6 +37,7 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
             setTicketCount={setTicketCount}
           />
         </div>
+        <Emails />
       </div>
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
