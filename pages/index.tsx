@@ -20,6 +20,12 @@ const Home: NextPage = () => {
   const [fetchError, setFetchError] = useState("");
   const [profile, setProfile] = useState<Profile | null>(null);
   const [hasProfileData, setHasProfileData] = useState<boolean>(false);
+  const [permission , setPermission] = useState<boolean>(false)
+
+  //  //asking user for permission to send notifications
+  //  useEffect(() => {
+  //   
+  // }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -47,6 +53,17 @@ const Home: NextPage = () => {
       }
     };
     fetchProfile();
+
+    //asking user for permission to send notifications
+    if (Notification.permission === "granted") {
+           setPermission(true)
+         } else if (Notification.permission !== "denied") {
+           Notification.requestPermission().then((permission) => {
+             if (permission === "granted") {
+               setPermission(true)
+             }
+           });
+         }
   }, [session?.user.id]);
 
   if (!session) {
