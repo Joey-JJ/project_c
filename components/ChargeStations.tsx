@@ -76,9 +76,8 @@ export const ChargeStations: React.FC = () => {
     fetchChargeStations();
 
     supabase
-      .channel("*")
+      .channel("public:charging_stations")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload: any) => {
-        fetchActiveSessions();
         fetchChargeStations();
       })
       .subscribe();
