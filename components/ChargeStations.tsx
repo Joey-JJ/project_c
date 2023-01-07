@@ -6,6 +6,9 @@ import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
 import { ChargeStation } from "./ChargeStation";
 
+const MINIMUM_CHARGING_TIME = 3600; // 1 hour
+const MAXIMUM_CHARGING_TIME = 21600; // 6 hours
+
 export const ChargeStations: React.FC = () => {
   const { session } = useSessionContext();
   const [loading, setLoading] = useState<boolean>(true);
@@ -104,17 +107,40 @@ export const ChargeStations: React.FC = () => {
       });
 
       // Update chargingSession in db
-      const { error: error2 } = await supabase
+      const endDate = new Date();
+      // fetch started_at from db
+      const { data, error: error2 } = await supabase
+        .from("charging_sessions")
+        .select("started_at")
+        .eq("taken_by", session?.user.id)
+        .is("ended_at", null)
+        .single();
+
+      const startDate = new Date(data?.started_at as string);
+      const chargingTimeInSeconds =
+        (endDate.getTime() - startDate.getTime()) / 1000;
+
+      const awardTicket =
+        chargingTimeInSeconds > MINIMUM_CHARGING_TIME &&
+        chargingTimeInSeconds < MAXIMUM_CHARGING_TIME;
+
+      if (awardTicket) {
+        // TODO: Add ticket to user
+      }
+
+      if (error2) throw error2;
+
+      const { error: error3 } = await supabase
         .from("charging_sessions")
         .update([
           {
-            ended_at: new Date(),
+            ended_at: endDate,
           },
         ])
         .eq("taken_by", session?.user.id)
         .is("ended_at", null);
 
-      if (error2) throw error2;
+      if (error3) throw error3;
 
       setIsCurrentlyCharging(false);
     } catch (error: any) {
