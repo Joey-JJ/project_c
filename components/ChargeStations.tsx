@@ -201,6 +201,7 @@ export const ChargeStations: React.FC = () => {
     }
   };
 
+
   if (loading) return <div>Loading...</div>;
   if (error && !loading) return <div>Error, could not fetch data</div>;
   if (!loading && isCurrentlyCharging)

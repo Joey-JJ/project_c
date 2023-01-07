@@ -22,10 +22,7 @@ const Home: NextPage = () => {
   const [hasProfileData, setHasProfileData] = useState<boolean>(false);
   const [permission , setPermission] = useState<boolean>(false)
 
-  //  //asking user for permission to send notifications
-  //  useEffect(() => {
-  //   
-  // }, []);
+  
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -69,6 +66,8 @@ const Home: NextPage = () => {
   if (!session) {
     return <SignIn />;
   }
+
+
 
   return (
     <>
