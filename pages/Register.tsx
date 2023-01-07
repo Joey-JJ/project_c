@@ -3,7 +3,9 @@ import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 
-const Register: React.FC = () => {
+const Register: React.FC<{
+  setHasProfileData: React.Dispatch<React.SetStateAction<boolean>>;
+}> = () => {
   const [cardnumber, setCardnumber] = useState("");
   const [license, setLicense] = useState("");
   const [name, setName] = useState("");
