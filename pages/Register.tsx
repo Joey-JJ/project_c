@@ -22,15 +22,15 @@ const Register: React.FC = () => {
   const validateInput = () => {
     // input validation nummerplaat
     const testLicenseNumber = (regexes: any, number:any ) => {
-      if (number.length != 6){
+      if (number.length != 8 || /\d/.test(number) == false){
         alert("Please enter a valid license number")
         return false
       }
-      for (let i = 0; i < 18; i++){
+      for (let i = 0; i < 17; i++){
         if (regexes[i].test(number)) {
           return true
         }
-        else if(i == 18){
+        else{
           alert("Please enter a valid license number")
           return false
         }
@@ -47,7 +47,7 @@ const Register: React.FC = () => {
       }
     }
     if (checkDoubleHyphen(license) && checkDoubleHyphen(cardnumber)){
-      if (testLicenseNumber(validLicenseNumbers, license.replace(/-/g, '').toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
+      if (testLicenseNumber(validLicenseNumbers, license.toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
         return true
       }
     }
@@ -82,6 +82,7 @@ const Register: React.FC = () => {
       console.log(error);
       alert(error.error_description || error.message);
     } finally {
+      window.location.reload(); //temporary bug fix
       setLoading(false);
       
     }

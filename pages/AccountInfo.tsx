@@ -27,22 +27,22 @@ const AccountInfo = () => {
   }
   
   const testLicenseNumber = (regexes: any, number:any ) => {
-    if (number.length != 6){
+    if (number.length != 8 || /\d/.test(number) == false){
       alert("Please enter a valid license number!")
       return false
     }
-    for (let i = 0; i < 18; i++){
+    for (let i = 0; i < 17; i++){
       if (regexes[i].test(number)) {
         return true
       }
-      else if(i == 18){
+      else{
         alert("Please enter a valid license number!")
         return false
       }
     }
   }
   const testCardNumber = (regex: any, number: any) => {
-    if (regex.test(number) && number.length < 15) {
+    if (regex.test(number) && number.length < 15 && /\d/.test(number) == true) {
       return true
     }
     else{
@@ -153,7 +153,7 @@ const AccountInfo = () => {
     }
     else if (newProfile.license_number != profile?.license_number && newProfile.license_number != null) {
       if (checkDoubleHyphen(newProfile.license_number)){
-      if(testLicenseNumber(validLicenseNumbers, newProfile.license_number.replace(/-/g, '').toUpperCase())){
+      if(testLicenseNumber(validLicenseNumbers, newProfile.license_number.toUpperCase())){
       newProfile.license_number = newProfile.license_number.toUpperCase()
       newProfile.charge_card = profile?.charge_card || null
       newProfile.full_name = profile?.full_name || null

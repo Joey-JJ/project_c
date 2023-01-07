@@ -23,11 +23,15 @@ const AdminAccountToevoegen = () => {
   const validateInput = () => {
     // input validation nummerplaat
     const testLicenseNumber = (regexes: any, number:any ) => {
-      for (let i = 0; i < 18; i++){
+      if (number.length != 8 || /\d/.test(number) == false){
+        alert("Please enter a valid license number")
+        return false
+      }
+      for (let i = 0; i < 17; i++){
         if (regexes[i].test(number)) {
           return true
         }
-        else if (i == 18){
+        else{
           alert("Please enter a valid license number")
           return false
         }
