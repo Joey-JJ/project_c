@@ -74,6 +74,14 @@ export const ChargeStations: React.FC = () => {
 
     fetchActiveSessions();
     fetchChargeStations();
+
+    supabase
+      .channel("*")
+      .on("postgres_changes", { event: "*", schema: "*" }, (payload: any) => {
+        fetchActiveSessions();
+        fetchChargeStations();
+      })
+      .subscribe();
   }, [session?.user.id]);
 
   const stopChargingHandler = async () => {
