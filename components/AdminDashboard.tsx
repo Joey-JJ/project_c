@@ -150,7 +150,7 @@ export const ChargeStation: FC<ChargeStationProps> = ({ name, status }) => {
 };
 
 interface Props {
-  session: any;
+  profile: Profile;
 }
 
 const AdminDashboard: React.FC<Props> = ({ profile }) => {
