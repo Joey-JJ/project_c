@@ -8,12 +8,18 @@ type Props = {
   station: ChargeStationType;
   chargingStations: ChargeStationType[];
   startCharging: (station: ChargeStationType) => void;
+  setChargingStations: React.Dispatch<
+    React.SetStateAction<ChargeStationType[]>
+  >;
+  isAdmin: boolean;
 };
 
 export const ChargeStation: React.FC<Props> = ({
   station,
   chargingStations,
   startCharging,
+  setChargingStations,
+  isAdmin,
 }) => {
   const { session } = useSessionContext();
   const [isOccupied, setIsOccupied] = useState<boolean | undefined>(false);
@@ -26,6 +32,56 @@ export const ChargeStation: React.FC<Props> = ({
       setIsOccupied(a);
     }
   }, [station.id, chargingStations]);
+
+  const adminChargingSessionHandler = async () => {
+    if (!isOccupied) {
+      startCharging(station);
+      return;
+    }
+
+    // Update charging session in db
+    try {
+      const { error } = await supabase
+        .from("charging_sessions")
+        .update({ ended_at: new Date() })
+        .is("ended_at", null)
+        .eq("charger_id", station.id);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+
+    // Update charging station in db
+    try {
+      const { error } = await supabase
+        .from("charging_stations")
+        .update({ currently_occupied: false, current_user_id: null })
+        .eq("id", station.id);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+
+    // Update charging station in state
+    setChargingStations((prev) => {
+      return prev.map((s) => {
+        if (s.id === station.id) {
+          return {
+            ...station,
+            currently_occupied: false,
+            current_user_id: null,
+          };
+        }
+        return station;
+      });
+    });
+  };
 
   return (
     <div
@@ -40,13 +96,23 @@ export const ChargeStation: React.FC<Props> = ({
           ? "Charger"
           : "Supercharger"}
       </h1>
-      <button
-        className={`btn-xs ${isOccupied ? "btn-error" : "btn-primary"}`}
-        onClick={() => startCharging(station)}
-        disabled={isOccupied}
-      >
-        {isOccupied ? "Taken" : "Start Charging"}
-      </button>
+      {!isAdmin && (
+        <button
+          className={`btn-xs ${isOccupied ? "btn-error" : "btn-primary"}`}
+          onClick={() => startCharging(station)}
+          disabled={isOccupied}
+        >
+          {isOccupied ? "Taken" : "Start Charging"}
+        </button>
+      )}
+      {isAdmin && (
+        <button
+          className={`btn-xs ${isOccupied ? "btn-error" : "btn-primary"}`}
+          onClick={adminChargingSessionHandler}
+        >
+          {isOccupied ? "Stop session" : "Start session"}
+        </button>
+      )}
     </div>
   );
 };

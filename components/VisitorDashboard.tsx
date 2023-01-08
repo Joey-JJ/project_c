@@ -28,7 +28,7 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
 
         <LotterySystem profile={Profile} setTicketCount={setTicketCount} />
 
-        <ChargeStations />
+        <ChargeStations isAdmin={false} />
 
         <div className="flex">
           <Notification />
