@@ -35,6 +35,7 @@ export const ChargeStation: React.FC<Props> = ({
       }`}
     >
       <h1>
+        #{station.id} -
         {!chargingStations.find((s) => s.id === station.id)?.is_supercharger
           ? "Charger"
           : "Supercharger"}
