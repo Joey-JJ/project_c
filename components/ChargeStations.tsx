@@ -9,7 +9,7 @@ import { ChargeStation } from "./ChargeStation";
 const MINIMUM_CHARGING_TIME = 3600; // 1 hour
 const MAXIMUM_CHARGING_TIME = 21600; // 6 hours
 
-export const ChargeStations: React.FC = () => {
+export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   const { session } = useSessionContext();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -56,7 +56,7 @@ export const ChargeStations: React.FC = () => {
           throw error;
         }
 
-        if (data) {
+        if (data && !isAdmin) {
           setIsCurrentlyCharging(
             (data as ChargingSessionType[]).some((chargingSession) => {
               if (chargingSession.taken_by === session?.user.id) {
@@ -81,7 +81,7 @@ export const ChargeStations: React.FC = () => {
         fetchChargeStations();
       })
       .subscribe();
-  }, [session?.user.id]);
+  }, [session?.user.id, isAdmin]);
 
   const stopChargingHandler = async () => {
     setLoading(true);
@@ -195,7 +195,7 @@ export const ChargeStations: React.FC = () => {
           return station;
         });
       });
-      setIsCurrentlyCharging(true);
+      if (!isAdmin) setIsCurrentlyCharging(true);
     } catch (error: any) {
       alert(error.message);
     }
