@@ -6,6 +6,7 @@ import { useSessionContext } from "../context/sessionContext";
 import LotterySystemAdmin from "./LotterySystemAdmin";
 import TicketCount from "./TicketCount";
 import ChargeStations from "./ChargeStations";
+import Emails from "./Emails";
 
 //make 6 different charging stations with a status
 
@@ -191,6 +192,7 @@ const AdminDashboard: React.FC<Props> = ({ profile }) => {
             setTicketCount={setTicketCount}
           ></TicketCountAdmin>
           <LotterySystemAdmin setTicketCount={setTicketCount} />
+          <Emails />
         </div>
       </div>
     </div>
