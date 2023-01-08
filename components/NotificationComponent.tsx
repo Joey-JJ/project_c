@@ -16,9 +16,7 @@ export const NotificationComponent: React.FC  = () => {
   const amountOfAvailableStations = chargingStations.filter(
     (station) => station.currently_occupied === false
   ).length;
-
-  ssadr
-
+  const [Occupied, setOccupied] = useState<boolean>(false);
 
 
 
@@ -77,6 +75,13 @@ export const NotificationComponent: React.FC  = () => {
       }
       if (data) {
         setChargingStations(data as ChargeStationType[]);
+        if (amountOfAvailableStations == 0) {
+          setOccupied(false);
+        }
+        if (amountOfAvailableStations > 0 && Occupied)  {
+          sendNotification("Charging spot available", "There is a charging spot available");
+          setOccupied(false);
+        }
       }
     } catch (error: any) {
       alert(error.message);
