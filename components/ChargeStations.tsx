@@ -6,10 +6,11 @@ import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
 import { ChargeStation } from "./ChargeStation";
 
+// Charging params
 const MINIMUM_CHARGING_TIME = 3600; // 1 hour
 const MAXIMUM_CHARGING_TIME = 21600; // 6 hours
 
-export const ChargeStations: React.FC = () => {
+export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   const { session } = useSessionContext();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export const ChargeStations: React.FC = () => {
           throw error;
         }
 
-        if (data) {
+        if (data && !isAdmin) {
           setIsCurrentlyCharging(
             (data as ChargingSessionType[]).some((chargingSession) => {
               if (chargingSession.taken_by === session?.user.id) {
@@ -81,7 +82,7 @@ export const ChargeStations: React.FC = () => {
         fetchChargeStations();
       })
       .subscribe();
-  }, [session?.user.id]);
+  }, [session?.user.id, isAdmin]);
 
   const stopChargingHandler = async () => {
     setLoading(true);
@@ -132,8 +133,22 @@ export const ChargeStations: React.FC = () => {
         chargingTimeInSeconds < MAXIMUM_CHARGING_TIME;
 
       if (awardTicket) {
-        // TODO: Add ticket to user
-        alert("Congratulations! You have been awarded a ticket!");
+        try {
+          const { error } = await supabase.from("tickets").insert({
+            user_id: session?.user.id,
+            created_at: new Date().toISOString(),
+          });
+
+          if (error) throw error;
+
+          alert("Congratulations! You have been awarded a ticket!");
+        } catch (error: any) {
+          alert(error.message);
+        }
+      } else {
+        alert(
+          "You have not been awarded a ticket because you did not stop your charging session soon enough or you have not charged long enough."
+        );
       }
 
       if (error2) throw error2;
@@ -195,7 +210,7 @@ export const ChargeStations: React.FC = () => {
           return station;
         });
       });
-      setIsCurrentlyCharging(true);
+      if (!isAdmin) setIsCurrentlyCharging(true);
     } catch (error: any) {
       alert(error.message);
     }
@@ -218,10 +233,12 @@ export const ChargeStations: React.FC = () => {
     <div className="grid sm:grid-cols-2 gap-2">
       {chargingStations.map((station) => (
         <ChargeStation
-          key={station.id}
+          key={Math.random()}
           station={station}
           chargingStations={chargingStations}
+          setChargingStations={setChargingStations}
           startCharging={startCharging}
+          isAdmin={isAdmin}
         />
       ))}
     </div>

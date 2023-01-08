@@ -5,6 +5,7 @@ import { supabase } from "../utils/supabaseClient";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { Profile } from "../Types/Profiles";
+import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 
 const AccountInfo = () => {
   const { session } = useSessionContext();
@@ -13,7 +14,42 @@ const AccountInfo = () => {
   const [firtsLetter, setfirtsLetter] = useState<string>("");
   const [newProfile, setNewProfile] = useState<Profile>({} as Profile);
   const [newEmail, setNewEmail] = useState<string>("");
-
+  
+  const checkDoubleHyphen = (code: any) => {
+    let count = 0;
+    for (let i = 0; i < code.length; i++){
+      if (code.charAt(i) == "-"){
+        count++
+      }
+    }
+    if (count > 1){return true}
+    else{return false}
+  }
+  
+  const testLicenseNumber = (regexes: any, number:any ) => {
+    if (number.length != 8 || /\d/.test(number) == false){
+      alert("Please enter a valid license number!")
+      return false
+    }
+    for (let i = 0; i < 17; i++){
+      if (regexes[i].test(number)) {
+        return true
+      }
+      else{
+        alert("Please enter a valid license number!")
+        return false
+      }
+    }
+  }
+  const testCardNumber = (regex: any, number: any) => {
+    if (regex.test(number) && number.length < 15 && /\d/.test(number) == true) {
+      return true
+    }
+    else{
+      alert("Please enter a valid card number!")
+      return false
+    }
+  }
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -79,19 +115,64 @@ const AccountInfo = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(newProfile)
     if (newEmail) {
       const { data, error } = await supabase.auth.updateUser({
         email: newEmail,
       });
       if (error) {
-        console.log("error: " + error);
+        alert("error: " + error);
         return;
+      }
+      else{
+        alert("Check the inbox of your new email!")
       }
 
       if (data) {
         console.log(data);
       }
-    } else {
+    } 
+    else if (newProfile.charge_card != profile?.charge_card && newProfile.charge_card != null){
+      if (checkDoubleHyphen(newProfile.charge_card)){
+      if(testCardNumber(validChargeNumber, newProfile.charge_card.replace(/-/g, '').toUpperCase())){
+        newProfile.charge_card = newProfile.charge_card.toUpperCase()
+        newProfile.license_number = profile?.license_number || null
+        newProfile.full_name = profile?.full_name || null
+        const { data, error } = await supabase
+          .from("profiles")
+          .update(newProfile)
+          .eq("id", session?.user.id);
+        if (error) {
+          console.log("error: " + error);
+          return;
+        }
+        fetchProfile();
+      }
+    }
+      else{alert("Your charge card must include two dashes (-)")}
+    }
+    else if (newProfile.license_number != profile?.license_number && newProfile.license_number != null) {
+      if (checkDoubleHyphen(newProfile.license_number)){
+      if(testLicenseNumber(validLicenseNumbers, newProfile.license_number.toUpperCase())){
+      newProfile.license_number = newProfile.license_number.toUpperCase()
+      newProfile.charge_card = profile?.charge_card || null
+      newProfile.full_name = profile?.full_name || null
+      const { data, error } = await supabase
+        .from("profiles")
+        .update(newProfile)
+        .eq("id", session?.user.id);
+      if (error) {
+        console.log("error: " + error);
+        return;
+      }
+      fetchProfile();
+    }
+    }
+    else{alert("Your license number must include two dashes (-)")}
+    }
+    else if (newProfile.full_name != profile?.full_name && newProfile.full_name != null){
+      newProfile.license_number = profile?.license_number || null
+      newProfile.charge_card = profile?.charge_card || null
       const { data, error } = await supabase
         .from("profiles")
         .update(newProfile)
@@ -107,13 +188,14 @@ const AccountInfo = () => {
 
   return (
     <div>
-      <div className="container mx-auto min-h-screen flex flex-col mt-8 items-center">
+      <div className="container mx-auto min-h-screen flex flex-col mt-8 mb-8 items-center">
         <div className="avatar placeholder">
           <div className="bg-neutral-focus text-neutral-content rounded-full w-20 mb-8">
             <span className="text-3xl">{firtsLetter}</span>
           </div>
         </div>
         <div className="stats shadow stats-vertical">
+        <div className="stat-value text-sm text-center">Please edit one detail at a time</div>
           <div className="stat">
             <div className="stat-title">Name</div>
             <div className="stat-value text-sm">{profile?.full_name}</div>
@@ -143,7 +225,7 @@ const AccountInfo = () => {
                 <label className="input-group input-group-vertical">
                   <span>Email</span>
                   <input
-                    type="text"
+                    type="email"
                     placeholder="Email"
                     className="input input-bordered"
                     name="Email"

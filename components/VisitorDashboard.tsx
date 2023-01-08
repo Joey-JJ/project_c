@@ -7,6 +7,7 @@ import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import ChargeStations from "./ChargeStations";
 import NotificationComponent from "./NotificationComponent";  
+import Emails from "./Emails";
 
 interface Props {
   profile: Profile;
@@ -27,7 +28,7 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
 
         <LotterySystem profile={Profile} setTicketCount={setTicketCount} />
 
-        <ChargeStations />
+        <ChargeStations isAdmin={false} />
 
         <div className="flex">
           <NotificationComponent />
