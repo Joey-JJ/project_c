@@ -132,8 +132,22 @@ export const ChargeStations: React.FC = () => {
         chargingTimeInSeconds < MAXIMUM_CHARGING_TIME;
 
       if (awardTicket) {
-        // TODO: Add ticket to user
-        alert("Congratulations! You have been awarded a ticket!");
+        try {
+          const { error } = await supabase.from("tickets").insert({
+            user_id: session?.user.id,
+            created_at: new Date().toISOString(),
+          });
+
+          if (error) throw error;
+
+          alert("Congratulations! You have been awarded a ticket!");
+        } catch (error: any) {
+          alert(error.message);
+        }
+      } else {
+        alert(
+          "You have not been awarded a ticket because you did not stop your charging session soon enough or you have not charged long enough."
+        );
       }
 
       if (error2) throw error2;
