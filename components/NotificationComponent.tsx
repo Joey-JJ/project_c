@@ -2,12 +2,26 @@ import React, { FC, useState, useEffect } from "react";
 import { BsBell, BsBellSlash } from "react-icons/bs";
 import { useSessionContext } from "../context/sessionContext";
 import { supabase } from "../utils/supabaseClient";
+import { ChargeStationType } from "../Types/ChargeStationType";
+
+
 
 
 
 export const NotificationComponent: React.FC  = () => {
   const [marked, setMarked] = useState<boolean>(true);
+  const [ chargingStations, setChargingStations ] = useState<ChargeStationType[]>([])
   const { session } = useSessionContext();
+  const amountOfStations = chargingStations.length;
+  const amountOfAvailableStations = chargingStations.filter(
+    (station) => station.currently_occupied === false
+  ).length;
+
+  ssadr
+
+
+
+
   // fetcht de status en weergeeft het op een correcte manier op het scherm
   useEffect(() => {
     const fetchBell = async () => {
@@ -25,10 +39,7 @@ export const NotificationComponent: React.FC  = () => {
     supabase
       .channel("public:charging_stations")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload: any) => {
-        sendNotification(
-          "Charging station available",
-          "A charging station is available for you to use"
-        );
+        fetchChargeStations();
       })
       .subscribe();
   }, [session?.user.id]);
@@ -52,6 +63,30 @@ export const NotificationComponent: React.FC  = () => {
       window.focus();
     };
   }
+
+  // fetching the charging stations
+  const fetchChargeStations = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("charging_stations")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        setChargingStations(data as ChargeStationType[]);
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+
+    
+
+
 
     return (
       <div className="max-w-[15rem] flex flex-col justify-center items-center gap-2 stats shadow py-2">
