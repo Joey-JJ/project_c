@@ -6,6 +6,7 @@ import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
 import { ChargeStation } from "./ChargeStation";
 
+// Charging params
 const MINIMUM_CHARGING_TIME = 3600; // 1 hour
 const MAXIMUM_CHARGING_TIME = 21600; // 6 hours
 
@@ -217,10 +218,12 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     <div className="grid sm:grid-cols-2 gap-2">
       {chargingStations.map((station) => (
         <ChargeStation
-          key={station.id}
+          key={Math.random()}
           station={station}
           chargingStations={chargingStations}
+          setChargingStations={setChargingStations}
           startCharging={startCharging}
+          isAdmin={isAdmin}
         />
       ))}
     </div>
