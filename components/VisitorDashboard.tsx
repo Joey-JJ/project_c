@@ -7,6 +7,7 @@ import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import ChargeStations from "./ChargeStations";
+import Emails from "./Emails";
 
 interface Props {
   profile: Profile;
