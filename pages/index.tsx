@@ -70,7 +70,6 @@ const Home: NextPage = () => {
         <VisitorDashboard profile={profile as Profile} />
       )}
       {hasProfileData && isAdmin && <AdminDashboard />}
-
       {!hasProfileData && <Register setHasProfileData={setHasProfileData} />}
     </>
   );

@@ -1,11 +1,11 @@
-  import React, { useState } from "react";
+import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useSessionContext } from "../context/sessionContext";
 import { validChargeNumber, validLicenseNumbers } from "../components/Regex";
 
 const Register: React.FC<{
   setHasProfileData: React.Dispatch<React.SetStateAction<boolean>>;
-}> = () => {
+}> = ({ setHasProfileData }) => {
   const [cardnumber, setCardnumber] = useState("");
   const [license, setLicense] = useState("");
   const [name, setName] = useState("");
@@ -13,80 +13,86 @@ const Register: React.FC<{
   const { session } = useSessionContext();
   const checkDoubleHyphen = (code: any) => {
     let count = 0;
-    for (let i = 0; i < code.length; i++){
-      if (code.charAt(i) == "-"){
-        count++
+    for (let i = 0; i < code.length; i++) {
+      if (code.charAt(i) == "-") {
+        count++;
       }
     }
-    if (count > 1){return true}
-    else{return false}
-  }
+    if (count > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const validateInput = () => {
     // input validation nummerplaat
-    const testLicenseNumber = (regexes: any, number:any ) => {
-      if (number.length != 8 || /\d/.test(number) == false){
-        alert("Please enter a valid license number")
-        return false
+    const testLicenseNumber = (regexes: any, number: any) => {
+      if (number.length != 8 || /\d/.test(number) == false) {
+        alert("Please enter a valid license number");
+        return false;
       }
-      for (let i = 0; i < 17; i++){
+      for (let i = 0; i < 17; i++) {
         if (regexes[i].test(number)) {
-          return true
-        }
-        else{
-          alert("Please enter a valid license number")
-          return false
+          return true;
+        } else {
+          alert("Please enter a valid license number");
+          return false;
         }
       }
-    }
+    };
     // input validation oplaadpas
     const testCardNumber = (regex: any, number: any) => {
       if (regex.test(number) && number.length < 15) {
-        return true
+        return true;
+      } else {
+        alert("Please enter a valid card number");
+        return false;
       }
-      else{
-        alert("Please enter a valid card number")
-        return false
+    };
+    if (checkDoubleHyphen(license) && checkDoubleHyphen(cardnumber)) {
+      if (
+        testLicenseNumber(validLicenseNumbers, license.toUpperCase()) &&
+        testCardNumber(
+          validChargeNumber,
+          cardnumber.replace(/-/g, "").toUpperCase()
+        )
+      ) {
+        return true;
       }
+    } else {
+      alert("Your card number or license number isn't correct, try again!");
+      return false;
     }
-    if (checkDoubleHyphen(license) && checkDoubleHyphen(cardnumber)){
-      if (testLicenseNumber(validLicenseNumbers, license.toUpperCase()) && testCardNumber(validChargeNumber, cardnumber.replace(/-/g, '').toUpperCase())){
-        return true
-      }
-    }
-    else{
-      alert("Your card number or license number isn't correct, try again!")
-      return false
-    }
-  }
+  };
 
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (validateInput()){
-      console.log("Details validated")
-    }
-    else{
-      return
-    }
+    // if (validateInput()) {
+    //   console.log("Details validated");
+    // } else {
+    //   return;
+    // }
     try {
-
       setLoading(true);
-      const { error } = await supabase.from("profiles").insert([
-        {
-          id: session?.user.id,
-          full_name: name,
-          license_number: license.toUpperCase(),
-          charge_card: cardnumber.toUpperCase(),
-        },
-      ]);
+      const { error } = await supabase
+        .from("profiles")
+        .update([
+          {
+            full_name: name,
+            license_number: license.toUpperCase(),
+            charge_card: cardnumber.toUpperCase(),
+            updated_at: new Date(),
+          },
+        ])
+        .eq("id", session?.user?.id);
       if (error) throw error;
+
+      setHasProfileData(true);
     } catch (error: any) {
-      console.log(error);
       alert(error.error_description || error.message);
     } finally {
-      window.location.reload(); //temporary bug fix
       setLoading(false);
-      
     }
   };
 
