@@ -41,25 +41,16 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
       <label htmlFor="my-modal-4" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
-          <h3 className="text-lg font-bold">How it works</h3>
-          <p className="pt-2">
-            <span className="text-green-500">Green</span>: The charging station
-            is empty and is ready to be used
+          <h3 className="text-lg font-bold mb-2">How it works</h3>
+          <p>
+            To start a charging session, press the button on the charging
+            station of the station you are currently parked on. You can earn
+            tickets by charging your car and ending the session within 6 hours.
+            When you end the session, you will have to move your car from the
+            charging spot. Every once in a while, the admin will grab a random
+            ticket from the database and the owner of that ticket will win a
+            prize. All tickets get deleted when a raffle happens.
           </p>
-          <p className="py-0">
-            <span className="text-orange-500">Orange</span>: The charging
-            station is occupied but isn&apos;t charging
-          </p>
-          <p className="py-0">
-            <span className="text-red-600">Red</span>: The charging station is
-            occupied and is charging
-          </p>
-          <p className="py-2">
-            You get tickets by good behaviour, removing your car when it&apos;s
-            done charging for example. The tickets can be used for a prize, try
-            collect a lot!
-          </p>
-          <p className="py-0"></p>
         </label>
       </label>
     </div>
