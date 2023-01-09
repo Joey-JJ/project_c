@@ -6,7 +6,7 @@ import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import ChargeStations from "./ChargeStations";
-import NotificationComponent from "./NotificationComponent";  
+import NotificationComponent from "./Bell";  
 import Emails from "./Emails";
 
 interface Props {
