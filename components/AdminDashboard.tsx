@@ -1,10 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import TicketCountAdmin from "../components/TicketCountAdmin";
-import { Profile } from "../Types/Profiles";
-import { useSessionContext } from "../context/sessionContext";
 import LotterySystemAdmin from "./LotterySystemAdmin";
-import TicketCount from "./TicketCount";
 import ChargeStations from "./ChargeStations";
 import Emails from "./Emails";
 
