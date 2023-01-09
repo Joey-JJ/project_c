@@ -9,46 +9,36 @@ interface Props {
 }
 
 const TicketCount: React.FC<Props> = ({ ticketCount, setTicketCount }) => {
-  const [loading, setLoading] = useState(true);
   const { session } = useSessionContext();
-  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     try {
-      // fetch tickets table
       const fetchTickets = async () => {
         const { data, error } = await supabase
           .from("tickets")
           .select("*")
           .eq("user_id", session?.user.id);
+
         if (error) {
-          console.log(error);
+          setError(true);
+          throw error;
         }
 
-        if (data) {
-          setTicketCount(data.length);
-          setLoading(false);
-          if (ticketCount === 0) {
-            setStatus("You have no tickets");
-          } else if (ticketCount >= 1 && ticketCount < 10) {
-            setStatus("OK");
-          } else if (ticketCount >= 10) {
-            setStatus("Good job!");
-          }
-        }
+        setTicketCount(data.length);
       };
 
       fetchTickets();
     } catch (error) {
-      console.log(error);
+      alert(error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [session?.user.id, setTicketCount]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
 
   return (
     <div className="stats shadow">
@@ -56,7 +46,11 @@ const TicketCount: React.FC<Props> = ({ ticketCount, setTicketCount }) => {
         <div className="stat items-center text-center">
           <div className="stat-title">Available Tickets</div>
           <div className="stat-value">{ticketCount}</div>
-          <div className="stat-desc">{status}</div>
+          <div className="stat-desc">
+            {ticketCount === 0 && "You have no tickets"}
+            {ticketCount > 0 && ticketCount < 10 && "Keep it up!"}
+            {ticketCount > 10 && "Amazing! "}
+          </div>
         </div>
       </div>
     </div>
