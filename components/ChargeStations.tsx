@@ -5,6 +5,9 @@ import type { ChargeStationType } from "../Types/ChargeStationType";
 import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
 import { ChargeStation } from "./ChargeStation";
+import { sendNotification } from "../utils/sendNotifications";
+
+
 
 // Charging params
 const MINIMUM_CHARGING_TIME = 3600; // 1 hour
@@ -17,6 +20,8 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
     []
   );
+
+  
   const [isCurrentlyCharging, setIsCurrentlyCharging] =
     useState<boolean>(false);
 
@@ -216,6 +221,7 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     }
   };
 
+  
 
   if (loading) return <div>Loading...</div>;
   if (error && !loading) return <div>Error, could not fetch data</div>;
@@ -230,18 +236,19 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     );
 
   return (
-    <div className="grid sm:grid-cols-2 gap-2">
-      {chargingStations.map((station) => (
-        <ChargeStation
-          key={Math.random()}
-          station={station}
-          chargingStations={chargingStations}
-          setChargingStations={setChargingStations}
-          startCharging={startCharging}
-          isAdmin={isAdmin}
-        />
-      ))}
-    </div>
+      <div className="grid sm:grid-cols-2 gap-2">
+        {chargingStations.map((station) => (
+          <ChargeStation
+            key={Math.random()}
+            station={station}
+            chargingStations={chargingStations}
+            setChargingStations={setChargingStations}
+            startCharging={startCharging}
+            isAdmin={isAdmin}
+          />
+        ))}
+      </div>
+     
   );
 };
 
