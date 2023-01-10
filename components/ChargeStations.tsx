@@ -5,6 +5,9 @@ import type { ChargeStationType } from "../Types/ChargeStationType";
 import { useSessionContext } from "../context/sessionContext";
 import { ChargingSessionType } from "../Types/ChargingSessionType";
 import { ChargeStation } from "./ChargeStation";
+import { sendNotification } from "../utils/sendNotifications";
+
+
 
 // Charging params
 const MINIMUM_CHARGING_TIME = 3600; // 1 hour
@@ -17,6 +20,11 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   const [chargingStations, setChargingStations] = useState<ChargeStationType[]>(
     []
   );
+
+  const [isOccupied, setIsOccupied] = useState<boolean>(false);
+  const [isMarked, setIsMarked] = useState<boolean>(false);
+  
+  
   const [isCurrentlyCharging, setIsCurrentlyCharging] =
     useState<boolean>(false);
 
@@ -36,6 +44,7 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
         if (data) {
           setChargingStations(data as ChargeStationType[]);
         }
+          
       } catch (error: any) {
         alert(error.message);
       } finally {
@@ -84,6 +93,19 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
       })
       .subscribe();
   }, [session?.user.id, isAdmin]);
+
+  useEffect(() => {
+    fetchIsMarked()
+    console.log(isMarked)
+    const count = chargingStations.filter((station) =>  station.currently_occupied).length;      
+    if (count === 6) {
+      setIsOccupied(true);
+    }
+    if (isOccupied && count < 6 && isMarked) {
+      sendNotification("A charging station is now free!", "Charge your car now!");
+      setIsOccupied(false);
+    }
+  }, [chargingStations]);
 
   const stopChargingHandler = async () => {
     setLoading(true);
@@ -217,6 +239,31 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     }
   };
 
+  const fetchIsMarked = async () => {
+    try {
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("Notifications")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) throw error;
+
+
+      if (data?.Notifications) {
+        setIsMarked(true);
+      }
+
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+
+
+  
+
   if (loading) return <div>Loading...</div>;
   if (error && !loading) return <div>Error, could not fetch data</div>;
   if (!loading && isCurrentlyCharging)
@@ -230,18 +277,19 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     );
 
   return (
-    <div className="grid sm:grid-cols-2 gap-2">
-      {chargingStations.map((station) => (
-        <ChargeStation
-          key={Math.random()}
-          station={station}
-          chargingStations={chargingStations}
-          setChargingStations={setChargingStations}
-          startCharging={startCharging}
-          isAdmin={isAdmin}
-        />
-      ))}
-    </div>
+      <div className="grid sm:grid-cols-2 gap-2">
+        {chargingStations.map((station) => (
+          <ChargeStation
+            key={Math.random()}
+            station={station}
+            chargingStations={chargingStations}
+            setChargingStations={setChargingStations}
+            startCharging={startCharging}
+            isAdmin={isAdmin}
+          />
+        ))}
+      </div>
+     
   );
 };
 

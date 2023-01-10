@@ -1,12 +1,12 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import TicketCount from "./TicketCount";
-import Notification from "./Notification";
 import LuutChargeStations from "./LuutChargeStations";
 import LotterySystem from "./LotterySystem";
 import { Profile } from "../Types/Profiles";
 import { useSessionContext } from "../context/sessionContext";
 import ChargeStations from "./ChargeStations";
+import NotificationComponent from "./Bell";  
 import Emails from "./Emails";
 
 interface Props {
@@ -31,7 +31,7 @@ const VisitorDashboard: React.FC<Props> = ({ profile }) => {
         <ChargeStations isAdmin={false} />
 
         <div className="flex">
-          <Notification />
+          <NotificationComponent />
           <TicketCount
             ticketCount={ticketCount}
             setTicketCount={setTicketCount}
