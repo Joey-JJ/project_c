@@ -21,6 +21,9 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     []
   );
 
+  const [isOccupied, setIsOccupied] = useState<boolean>(false);
+  const [isMarked, setIsMarked] = useState<boolean>(false);
+  
   
   const [isCurrentlyCharging, setIsCurrentlyCharging] =
     useState<boolean>(false);
@@ -41,6 +44,7 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
         if (data) {
           setChargingStations(data as ChargeStationType[]);
         }
+          
       } catch (error: any) {
         alert(error.message);
       } finally {
@@ -84,10 +88,23 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     supabase
       .channel("public:charging_stations")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload: any) => {
-        fetchChargeStations();
+       fetchChargeStations();
       })
       .subscribe();
   }, [session?.user.id, isAdmin]);
+
+  useEffect(() => {
+    fetchIsMarked()
+    console.log(isMarked)
+    const count = chargingStations.filter((station) =>  station.currently_occupied).length;      
+    if (count === 6) {
+      setIsOccupied(true);
+    }
+    if (isOccupied && count < 6 && isMarked) {
+      sendNotification("A charging station is now free!", "Charge your car now!");
+      setIsOccupied(false);
+    }
+  }, [chargingStations]);
 
   const stopChargingHandler = async () => {
     setLoading(true);
@@ -220,6 +237,29 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
       alert(error.message);
     }
   };
+
+  const fetchIsMarked = async () => {
+    try {
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("Notifications")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) throw error;
+
+
+      if (data?.Notifications) {
+        setIsMarked(true);
+      }
+
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+
 
   
 
