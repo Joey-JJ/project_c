@@ -68,11 +68,11 @@ const Register: React.FC<{
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-     if (validateInput()) {
-       console.log("Details validated");
-     } else {
-       return;
-     }
+    if (validateInput()) {
+      console.log("Details validated");
+    } else {
+      return;
+    }
     try {
       setLoading(true);
       const { error } = await supabase
@@ -95,6 +95,8 @@ const Register: React.FC<{
       setLoading(false);
     }
   };
+
+  if (!session) return <div>No access.</div>;
 
   return (
     <>
