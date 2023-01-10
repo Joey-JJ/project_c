@@ -88,7 +88,8 @@ export const ChargeStations: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     supabase
       .channel("public:charging_stations")
       .on("postgres_changes", { event: "*", schema: "*" }, (payload: any) => {
-       fetchChargeStations();
+        fetchActiveSessions();
+        fetchChargeStations();
       })
       .subscribe();
   }, [session?.user.id, isAdmin]);

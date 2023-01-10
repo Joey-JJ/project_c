@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Profile } from "../Types/Profiles";
 import { Ticket } from "../Types/Tickets";
 import Alert from "../components/UI/Alert";
-
+import { useSessionContext } from "../context/sessionContext";
 
 export default function AdminRaffle() {
   const [loading, setLoading] = useState(true);
@@ -17,8 +17,7 @@ export default function AdminRaffle() {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertType, setAlertType] = useState("");
 
-
-
+  const { session } = useSessionContext();
 
   useEffect(() => {
     try {
@@ -53,7 +52,6 @@ export default function AdminRaffle() {
     return <p>Loading...</p>;
   }
 
-
   //fetching tickets from database and setting tickets state to the data with no duplicates in array
   const fetchTickets = async () => {
     const { data, error } = await supabase.from("tickets").select("*");
@@ -63,24 +61,23 @@ export default function AdminRaffle() {
       setAlertMessage(error.message);
       setAlertTitle("Error");
       setAlertType("error");
-    }
-    else {
+    } else {
       setTickets(data);
     }
   };
 
-
-
   const flushData = async () => {
-    const { data, error } = await supabase.from("tickets").delete().eq("isTicket", true);
+    const { data, error } = await supabase
+      .from("tickets")
+      .delete()
+      .eq("isTicket", true);
     if (error) {
       console.log(error);
       setAlert(true);
       setAlertMessage(error.message);
       setAlertTitle("Error");
       setAlertType("error");
-    }
-    else {
+    } else {
       console.log("Raffle has been flushed");
       setAlert(true);
       setAlertMessage("Raffle has been flushed");
@@ -89,7 +86,6 @@ export default function AdminRaffle() {
       fetchTickets();
     }
   };
-
 
   const fetchWinner = async (winner: string) => {
     const { data, error } = await supabase
@@ -103,13 +99,11 @@ export default function AdminRaffle() {
       setAlertMessage(error.message);
       setAlertTitle("Error");
       setAlertType("error");
-    }
-    else {
+    } else {
       setWinner(data);
       flushData();
     }
   };
-
 
   const chooseWinner = () => {
     const randomTicket = tickets[Math.floor(Math.random() * tickets.length)];
@@ -126,7 +120,6 @@ export default function AdminRaffle() {
     return newTicket;
   }
 
-
   const addTicket = async (user_id: string) => {
     const ticket = CreateTicket(user_id);
     const { data, error } = await supabase.from("tickets").insert(ticket);
@@ -136,8 +129,7 @@ export default function AdminRaffle() {
       setAlertMessage(error.message);
       setAlertTitle("Error");
       setAlertType("error");
-    }
-    else {
+    } else {
       console.log(data);
       setAlert(true);
       setAlertMessage("Ticket has been added");
@@ -148,7 +140,7 @@ export default function AdminRaffle() {
   };
 
   //Adding alert to show if ticket was added or not
-  
+  if (!session) return <div>no access</div>;
   return (
     <div>
       {alert && (
@@ -165,8 +157,8 @@ export default function AdminRaffle() {
           <div className="card-body items-center text-center">
             <h2 className="card-title">Raffle!</h2>
             <p className="py-4">
-              Warning: This will delete all tickets in the database!
-              There are currently {tickets.length} tickets in the raffle!
+              Warning: This will delete all tickets in the database! There are
+              currently {tickets.length} tickets in the raffle!
             </p>
             <div className="card-actions justify-end">
               <button className="btn btn-primary" onClick={chooseWinner}>
@@ -196,11 +188,13 @@ export default function AdminRaffle() {
           <div className="card-body items-center text-center">
             <h2 className="card-title">Add Ticket</h2>
             <div className="card-actions justify-start">
-              <input type="text"
+              <input
+                type="text"
                 className="input input-bordered"
                 placeholder="User ID"
                 value={user_id}
-                onChange={(e) => setUserId(e.target.value)} />
+                onChange={(e) => setUserId(e.target.value)}
+              />
             </div>
             <div className="card-actions justify-end">
               <button

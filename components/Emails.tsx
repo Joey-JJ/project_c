@@ -27,8 +27,8 @@ const Emails: React.FC = () => {
   if (error) return <p>Error, could not fetch emails</p>;
 
   return (
-    <div className="max-w-xl overflow-scroll my-10 max-h-80">
-      <table className="table table-compact">
+    <div className="min-w-xl flex overflow-scroll my-10 max-h-80">
+      <table className="table grow table-compact">
         <thead>
           <tr>
             <th></th>
