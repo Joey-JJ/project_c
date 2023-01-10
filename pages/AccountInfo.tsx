@@ -35,7 +35,7 @@ const AccountInfo = () => {
       if (regexes[i].test(number)) {
         return true
       }
-      else{
+      else if (i == 17){
         alert("Please enter a valid license number!")
         return false
       }

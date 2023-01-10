@@ -34,7 +34,7 @@ const Register: React.FC<{
       for (let i = 0; i < 17; i++) {
         if (regexes[i].test(number)) {
           return true;
-        } else {
+        } else if (i == 17) {
           alert("Please enter a valid license number");
           return false;
         }
@@ -68,11 +68,11 @@ const Register: React.FC<{
   //add authenticated user to database profile and adding cardnumber and license and name
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // if (validateInput()) {
-    //   console.log("Details validated");
-    // } else {
-    //   return;
-    // }
+     if (validateInput()) {
+       console.log("Details validated");
+     } else {
+       return;
+     }
     try {
       setLoading(true);
       const { error } = await supabase
