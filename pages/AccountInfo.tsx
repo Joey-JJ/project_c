@@ -31,14 +31,13 @@ const AccountInfo = () => {
 
   const testLicenseNumber = (regexes: any, number: any) => {
     if (number.length != 8 || /\d/.test(number) == false) {
-      alert("Please enter a valid license number!");
+      alert("Your license number has to be 8 characters long and contain numbers!");
       return false;
     }
     for (let i = 0; i < 17; i++) {
       if (regexes[i].test(number)) {
         return true;
       } else if (i == 17) {
-        alert("Please enter a valid license number!");
         return false;
       }
     }
@@ -47,7 +46,6 @@ const AccountInfo = () => {
     if (regex.test(number) && number.length < 15 && /\d/.test(number) == true) {
       return true;
     } else {
-      alert("Please enter a valid card number!");
       return false;
     }
   };
@@ -161,6 +159,7 @@ const AccountInfo = () => {
           }
           fetchProfile();
         }
+        else{alert("Please enter a valid charge card number!")}
       } else {
         alert("Your charge card must include two dashes (-)");
       }
@@ -188,6 +187,7 @@ const AccountInfo = () => {
           }
           fetchProfile();
         }
+        else{alert("Please enter a valid license number!")}
       } else {
         alert("Your license number must include two dashes (-)");
       }
